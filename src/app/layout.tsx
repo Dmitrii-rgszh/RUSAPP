@@ -1,30 +1,27 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import AuthSessionProvider from "@/components/providers/SessionProvider";
+
+const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
-  title: 'BotCraft - Создайте умного бота за 10 минут',
-  description: 'Визуальный конструктор для создания ботов в Telegram, WhatsApp и ВКонтакте без программирования',
-  keywords: 'боты, чат-боты, telegram, whatsapp, вконтакте, no-code, конструктор ботов',
-  openGraph: {
-    title: 'BotCraft - Создайте умного бота за 10 минут',
-    description: 'Визуальный конструктор для создания ботов без программирования',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'BotCraft - Создайте умного бота за 10 минут',
-    description: 'Визуальный конструктор для создания ботов без программирования',
-  }
-}
+  title: "BotCraft - Платформа для создания ботов",
+  description: "Создавайте умных ботов для Telegram, WhatsApp и других платформ без кода",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="ru">
-      <body>{children}</body>
+      <body className={inter.className}>
+        <AuthSessionProvider>
+          {children}
+        </AuthSessionProvider>
+      </body>
     </html>
-  )
+  );
 }
