@@ -2,21 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  Bot, 
-  Plus, 
-  Search, 
-  Filter, 
-  MoreVertical, 
-  Play, 
-  Pause, 
-  Edit3, 
-  BarChart3, 
-  Users,
-  MessageSquare,
-  Zap,
-  Clock
-} from 'lucide-react';
 
 export default function BotsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,17 +66,17 @@ export default function BotsPage() {
   const platformConfig = {
     TELEGRAM: { 
       name: 'Telegram', 
-      color: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+      color: { bg: 'rgba(59, 130, 246, 0.2)', text: '#60a5fa', border: 'rgba(59, 130, 246, 0.3)' },
       icon: '📱'
     },
     WHATSAPP: { 
       name: 'WhatsApp', 
-      color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30',
+      color: { bg: 'rgba(34, 197, 94, 0.2)', text: '#22c55e', border: 'rgba(34, 197, 94, 0.3)' },
       icon: '📞'
     },
     VK: { 
       name: 'ВКонтакте', 
-      color: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+      color: { bg: 'rgba(139, 92, 246, 0.2)', text: '#a78bfa', border: 'rgba(139, 92, 246, 0.3)' },
       icon: '🌐'
     }
   };
@@ -107,73 +92,200 @@ export default function BotsPage() {
   });
 
   return (
-    <div className="p-6">
+    <div style={{ 
+      padding: '24px',
+      background: 'linear-gradient(135deg, #1f2937, #111827)',
+      minHeight: '100vh',
+      color: 'white'
+    }}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '32px'
+      }}>
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 bg-clip-text text-transparent mb-2">
+          <h1 style={{
+            fontSize: '2rem',
+            fontWeight: 'bold',
+            background: 'linear-gradient(to right, #60a5fa, #a78bfa, #34d399)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            marginBottom: '8px'
+          }}>
             Мои боты
           </h1>
-          <p className="text-gray-400">Управляйте своими ботами и отслеживайте их эффективность</p>
+          <p style={{ color: '#9ca3af' }}>
+            Управляйте своими ботами и отслеживайте их эффективность
+          </p>
         </div>
         
         <Link
           href="/bots/new"
-          className="group relative"
+          style={{
+            position: 'relative',
+            textDecoration: 'none'
+          }}
         >
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-          <div className="relative flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 active:scale-95">
-            <Plus className="h-5 w-5 mr-2" />
+          <div style={{
+            position: 'absolute',
+            inset: '-2px',
+            background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+            borderRadius: '8px',
+            opacity: 0.3,
+            filter: 'blur(4px)'
+          }}></div>
+          <div style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '12px 24px',
+            background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+            borderRadius: '8px',
+            color: 'white',
+            fontWeight: '500',
+            transition: 'all 0.2s',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(to right, #2563eb, #7c3aed)';
+            e.currentTarget.style.transform = 'scale(1.05)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(to right, #3b82f6, #8b5cf6)';
+            e.currentTarget.style.transform = 'scale(1)';
+          }}>
+            <span style={{ marginRight: '8px', fontSize: '18px' }}>➕</span>
             Создать бота
           </div>
         </Link>
       </div>
 
       {/* Filters */}
-      <div className="mb-6">
-        <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-xl blur opacity-20"></div>
-          <div className="relative bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4">
-            <div className="flex flex-col sm:flex-row gap-4">
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ position: 'relative' }}>
+          <div style={{
+            position: 'absolute',
+            inset: '-2px',
+            background: 'linear-gradient(to right, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.2))',
+            borderRadius: '12px',
+            opacity: 0.2,
+            filter: 'blur(4px)'
+          }}></div>
+          <div style={{
+            position: 'relative',
+            background: 'rgba(55, 65, 81, 0.8)',
+            backdropFilter: 'blur(4px)',
+            border: '1px solid rgba(75, 85, 99, 0.5)',
+            borderRadius: '12px',
+            padding: '16px'
+          }}>
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px'
+            }}>
               {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <div style={{ position: 'relative', flex: 1 }}>
+                <span style={{
+                  position: 'absolute',
+                  left: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '16px'
+                }}>🔍</span>
                 <input
                   type="text"
                   placeholder="Поиск ботов..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-gray-700/50 border border-gray-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200"
+                  style={{
+                    width: '100%',
+                    paddingLeft: '40px',
+                    paddingRight: '16px',
+                    paddingTop: '8px',
+                    paddingBottom: '8px',
+                    background: 'rgba(75, 85, 99, 0.5)',
+                    border: '1px solid rgba(107, 114, 128, 0.5)',
+                    borderRadius: '8px',
+                    color: 'white',
+                    fontSize: '14px',
+                    outline: 'none',
+                    transition: 'all 0.2s'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+                    e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.25)';
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'rgba(107, 114, 128, 0.5)';
+                    e.target.style.boxShadow = 'none';
+                  }}
                 />
               </div>
 
-              {/* Platform Filter */}
-              <div className="relative">
-                <select
-                  value={filterPlatform}
-                  onChange={(e) => setFilterPlatform(e.target.value)}
-                  className="appearance-none bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-2 pr-8 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200"
-                >
-                  <option value="all">Все платформы</option>
-                  <option value="TELEGRAM">Telegram</option>
-                  <option value="WHATSAPP">WhatsApp</option>
-                  <option value="VK">ВКонтакте</option>
-                </select>
-                <Filter className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
-              </div>
+              <div style={{ display: 'flex', gap: '16px' }}>
+                {/* Platform Filter */}
+                <div style={{ position: 'relative' }}>
+                  <select
+                    value={filterPlatform}
+                    onChange={(e) => setFilterPlatform(e.target.value)}
+                    style={{
+                      background: 'rgba(75, 85, 99, 0.5)',
+                      border: '1px solid rgba(107, 114, 128, 0.5)',
+                      borderRadius: '8px',
+                      padding: '8px 32px 8px 16px',
+                      color: 'white',
+                      fontSize: '14px',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <option value="all">Все платформы</option>
+                    <option value="TELEGRAM">Telegram</option>
+                    <option value="WHATSAPP">WhatsApp</option>
+                    <option value="VK">ВКонтакте</option>
+                  </select>
+                  <span style={{
+                    position: 'absolute',
+                    right: '8px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    pointerEvents: 'none',
+                    color: '#9ca3af'
+                  }}>🔽</span>
+                </div>
 
-              {/* Status Filter */}
-              <div className="relative">
-                <select
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                  className="appearance-none bg-gray-700/50 border border-gray-600/50 rounded-lg px-4 py-2 pr-8 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all duration-200"
-                >
-                  <option value="all">Все статусы</option>
-                  <option value="active">Активные</option>
-                  <option value="inactive">Остановленные</option>
-                </select>
-                <Zap className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                {/* Status Filter */}
+                <div style={{ position: 'relative' }}>
+                  <select
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                    style={{
+                      background: 'rgba(75, 85, 99, 0.5)',
+                      border: '1px solid rgba(107, 114, 128, 0.5)',
+                      borderRadius: '8px',
+                      padding: '8px 32px 8px 16px',
+                      color: 'white',
+                      fontSize: '14px',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <option value="all">Все статусы</option>
+                    <option value="active">Активные</option>
+                    <option value="inactive">Остановленные</option>
+                  </select>
+                  <span style={{
+                    position: 'absolute',
+                    right: '8px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    pointerEvents: 'none',
+                    color: '#9ca3af'
+                  }}>⚡</span>
+                </div>
               </div>
             </div>
           </div>
@@ -182,119 +294,361 @@ export default function BotsPage() {
 
       {/* Bots Grid */}
       {filteredBots.length === 0 ? (
-        <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-gray-500/20 to-gray-400/20 rounded-xl blur opacity-20"></div>
-          <div className="relative bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-12 text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-br from-gray-600/20 to-gray-500/20 rounded-xl flex items-center justify-center mb-4">
-              <Bot className="h-8 w-8 text-gray-400" />
+        <div style={{ position: 'relative' }}>
+          <div style={{
+            position: 'absolute',
+            inset: '-2px',
+            background: 'linear-gradient(to right, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.2))',
+            borderRadius: '12px',
+            opacity: 0.2,
+            filter: 'blur(4px)'
+          }}></div>
+          <div style={{
+            position: 'relative',
+            background: 'rgba(55, 65, 81, 0.8)',
+            backdropFilter: 'blur(4px)',
+            border: '1px solid rgba(75, 85, 99, 0.5)',
+            borderRadius: '12px',
+            padding: '48px',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              margin: '0 auto 16px',
+              width: '64px',
+              height: '64px',
+              background: 'linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.2))',
+              borderRadius: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '32px'
+            }}>
+              🤖
             </div>
-            <h3 className="text-xl font-medium text-white mb-2">
+            <h3 style={{ 
+              fontSize: '20px', 
+              fontWeight: '500', 
+              color: 'white', 
+              marginBottom: '8px' 
+            }}>
               {searchTerm || filterPlatform !== 'all' || filterStatus !== 'all' 
                 ? 'Боты не найдены' 
                 : 'У вас пока нет ботов'}
             </h3>
-            <p className="text-gray-400 mb-6">
+            <p style={{ 
+              color: '#9ca3af', 
+              marginBottom: '24px' 
+            }}>
               {searchTerm || filterPlatform !== 'all' || filterStatus !== 'all'
                 ? 'Попробуйте изменить фильтры поиска'
                 : 'Начните с создания вашего первого бота'}
             </p>
             <Link
               href="/bots/new"
-              className="group relative inline-block"
+              style={{
+                position: 'relative',
+                display: 'inline-block',
+                textDecoration: 'none'
+              }}
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
-              <div className="relative flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg text-white font-medium">
-                <Plus className="h-5 w-5 mr-2" />
+              <div style={{
+                position: 'absolute',
+                inset: '-2px',
+                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                borderRadius: '8px',
+                opacity: 0.3,
+                filter: 'blur(4px)'
+              }}></div>
+              <div style={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px 24px',
+                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                borderRadius: '8px',
+                color: 'white',
+                fontWeight: '500'
+              }}>
+                <span style={{ marginRight: '8px' }}>➕</span>
                 Создать бота
               </div>
             </Link>
           </div>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div style={{
+          display: 'grid',
+          gap: '24px',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))'
+        }}>
           {filteredBots.map((bot, index) => (
             <div
               key={bot.id}
-              className="relative group"
-              style={{ animationDelay: `${index * 100}ms` }}
+              style={{ position: 'relative' }}
             >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-emerald-500/20 rounded-xl blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
-              <div className="relative bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-gray-600/50 transition-all duration-300">
+              <div style={{
+                position: 'absolute',
+                inset: '-2px',
+                background: 'linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2), rgba(34, 197, 94, 0.2))',
+                borderRadius: '12px',
+                opacity: 0.2,
+                filter: 'blur(4px)'
+              }}></div>
+              <div style={{
+                position: 'relative',
+                background: 'rgba(55, 65, 81, 0.8)',
+                backdropFilter: 'blur(4px)',
+                border: '1px solid rgba(75, 85, 99, 0.5)',
+                borderRadius: '12px',
+                padding: '24px',
+                transition: 'all 0.3s',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(107, 114, 128, 0.5)';
+                e.currentTarget.style.transform = 'translateY(-4px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(75, 85, 99, 0.5)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}>
                 {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg">
-                      <Bot className="h-6 w-6 text-blue-400" />
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  marginBottom: '16px'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px'
+                  }}>
+                    <div style={{
+                      padding: '8px',
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))',
+                      borderRadius: '8px'
+                    }}>
+                      <span style={{ fontSize: '24px' }}>🤖</span>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-white">{bot.name}</h3>
-                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${platformConfig[bot.platform].color}`}>
+                      <h3 style={{
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        color: 'white',
+                        margin: 0,
+                        marginBottom: '4px'
+                      }}>{bot.name}</h3>
+                      <span style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        padding: '2px 8px',
+                        borderRadius: '12px',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        background: platformConfig[bot.platform].color.bg,
+                        color: platformConfig[bot.platform].color.text,
+                        border: `1px solid ${platformConfig[bot.platform].color.border}`
+                      }}>
                         {platformConfig[bot.platform].icon} {platformConfig[bot.platform].name}
                       </span>
                     </div>
                   </div>
-                  <div className="relative group">
-                    <button className="p-2 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded-lg transition-colors">
-                      <MoreVertical className="h-4 w-4" />
-                    </button>
-                  </div>
+                  <button style={{
+                    padding: '8px',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#9ca3af',
+                    cursor: 'pointer',
+                    borderRadius: '4px',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'white';
+                    e.currentTarget.style.background = 'rgba(75, 85, 99, 0.5)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = '#9ca3af';
+                    e.currentTarget.style.background = 'transparent';
+                  }}>
+                    ⋮
+                  </button>
                 </div>
 
                 {/* Description */}
-                <p className="text-gray-400 text-sm mb-4 line-clamp-2">{bot.description}</p>
+                <p style={{
+                  color: '#9ca3af',
+                  fontSize: '14px',
+                  marginBottom: '16px',
+                  lineHeight: '1.5'
+                }}>{bot.description}</p>
 
                 {/* Stats */}
-                <div className="grid grid-cols-3 gap-4 mb-4">
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-white">{bot.users}</div>
-                    <div className="text-xs text-gray-400">Пользователи</div>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '16px',
+                  marginBottom: '16px'
+                }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{
+                      fontSize: '18px',
+                      fontWeight: '600',
+                      color: 'white'
+                    }}>{bot.users}</div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: '#9ca3af'
+                    }}>Пользователи</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-emerald-400">{bot.messages}</div>
-                    <div className="text-xs text-gray-400">Сообщения</div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{
+                      fontSize: '18px',
+                      fontWeight: '600',
+                      color: '#22c55e'
+                    }}>{bot.messages}</div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: '#9ca3af'
+                    }}>Сообщения</div>
                   </div>
-                  <div className="text-center">
-                    <div className="text-lg font-semibold text-purple-400">{bot.successRate}%</div>
-                    <div className="text-xs text-gray-400">Успешность</div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{
+                      fontSize: '18px',
+                      fontWeight: '600',
+                      color: '#a78bfa'
+                    }}>{bot.successRate}%</div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: '#9ca3af'
+                    }}>Успешность</div>
                   </div>
                 </div>
 
                 {/* Status */}
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-2 h-2 rounded-full ${bot.isActive ? 'bg-emerald-400' : 'bg-gray-500'}`}></div>
-                    <span className={`text-sm ${bot.isActive ? 'text-emerald-400' : 'text-gray-500'}`}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '16px'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      background: bot.isActive ? '#22c55e' : '#6b7280'
+                    }}></div>
+                    <span style={{
+                      fontSize: '14px',
+                      color: bot.isActive ? '#22c55e' : '#6b7280'
+                    }}>
                       {bot.isActive ? 'Активен' : 'Остановлен'}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-1 text-xs text-gray-500">
-                    <Clock className="h-3 w-3" />
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    fontSize: '12px',
+                    color: '#6b7280'
+                  }}>
+                    <span>🕐</span>
                     <span>{bot.lastActivity}</span>
                   </div>
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2">
+                <div style={{ display: 'flex', gap: '8px' }}>
                   <Link
                     href={`/bots/${bot.id}/edit`}
-                    className="flex-1 flex items-center justify-center px-3 py-2 bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white text-sm font-medium rounded-lg border border-gray-600/50 hover:border-gray-500/50 transition-all duration-200"
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '8px 12px',
+                      background: 'rgba(75, 85, 99, 0.5)',
+                      color: '#d1d5db',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(107, 114, 128, 0.5)',
+                      textDecoration: 'none',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(107, 114, 128, 0.5)';
+                      e.currentTarget.style.color = 'white';
+                      e.currentTarget.style.borderColor = 'rgba(156, 163, 175, 0.5)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(75, 85, 99, 0.5)';
+                      e.currentTarget.style.color = '#d1d5db';
+                      e.currentTarget.style.borderColor = 'rgba(107, 114, 128, 0.5)';
+                    }}
                   >
-                    <Edit3 className="h-4 w-4 mr-1" />
+                    <span style={{ marginRight: '4px' }}>✏️</span>
                     Править
                   </Link>
                   <Link
                     href={`/bots/${bot.id}/analytics`}
-                    className="flex-1 flex items-center justify-center px-3 py-2 bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 hover:text-white text-sm font-medium rounded-lg border border-gray-600/50 hover:border-gray-500/50 transition-all duration-200"
+                    style={{
+                      flex: 1,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '8px 12px',
+                      background: 'rgba(75, 85, 99, 0.5)',
+                      color: '#d1d5db',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      borderRadius: '8px',
+                      border: '1px solid rgba(107, 114, 128, 0.5)',
+                      textDecoration: 'none',
+                      transition: 'all 0.2s'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(107, 114, 128, 0.5)';
+                      e.currentTarget.style.color = 'white';
+                      e.currentTarget.style.borderColor = 'rgba(156, 163, 175, 0.5)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'rgba(75, 85, 99, 0.5)';
+                      e.currentTarget.style.color = '#d1d5db';
+                      e.currentTarget.style.borderColor = 'rgba(107, 114, 128, 0.5)';
+                    }}
                   >
-                    <BarChart3 className="h-4 w-4 mr-1" />
+                    <span style={{ marginRight: '4px' }}>📊</span>
                     Статистика
                   </Link>
-                  <button className={`p-2 rounded-lg border transition-all duration-200 ${
-                    bot.isActive 
-                      ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400 border-red-500/30' 
-                      : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border-emerald-500/30'
-                  }`}>
-                    {bot.isActive ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                  <button style={{
+                    padding: '8px',
+                    borderRadius: '8px',
+                    border: '1px solid',
+                    transition: 'all 0.2s',
+                    cursor: 'pointer',
+                    background: bot.isActive 
+                      ? 'rgba(239, 68, 68, 0.2)' 
+                      : 'rgba(34, 197, 94, 0.2)',
+                    color: bot.isActive ? '#f87171' : '#22c55e',
+                    borderColor: bot.isActive ? 'rgba(239, 68, 68, 0.3)' : 'rgba(34, 197, 94, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = bot.isActive 
+                      ? 'rgba(239, 68, 68, 0.3)' 
+                      : 'rgba(34, 197, 94, 0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = bot.isActive 
+                      ? 'rgba(239, 68, 68, 0.2)' 
+                      : 'rgba(34, 197, 94, 0.2)';
+                  }}>
+                    {bot.isActive ? '⏸️' : '▶️'}
                   </button>
                 </div>
               </div>

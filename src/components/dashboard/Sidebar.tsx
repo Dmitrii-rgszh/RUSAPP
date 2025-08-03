@@ -3,34 +3,22 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  Home, 
-  Bot, 
-  Users, 
-  FileText, 
-  Settings, 
-  HelpCircle, 
-  BarChart3,
-  Zap,
-  Crown,
-  ChevronRight
-} from 'lucide-react';
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   const mainNavigation = [
-    { id: 'dashboard', name: 'Главная', icon: Home, href: '/dashboard', badge: null },
-    { id: 'bots', name: 'Боты', icon: Bot, href: '/bots', badge: 5 },
-    { id: 'analytics', name: 'Аналитика', icon: BarChart3, href: '/analytics', badge: null },
-    { id: 'contacts', name: 'Контакты', icon: Users, href: '/contacts', badge: null },
-    { id: 'templates', name: 'Шаблоны', icon: FileText, href: '/templates', badge: null },
-    { id: 'integrations', name: 'Интеграции', icon: Zap, href: '/integrations', badge: null },
+    { id: 'dashboard', name: 'Главная', icon: '🏠', href: '/dashboard', badge: null },
+    { id: 'bots', name: 'Боты', icon: '🤖', href: '/bots', badge: 5 },
+    { id: 'analytics', name: 'Аналитика', icon: '📊', href: '/analytics', badge: null },
+    { id: 'contacts', name: 'Контакты', icon: '👥', href: '/contacts', badge: null },
+    { id: 'templates', name: 'Шаблоны', icon: '📋', href: '/templates', badge: null },
+    { id: 'integrations', name: 'Интеграции', icon: '⚡', href: '/integrations', badge: null },
   ];
 
   const secondaryNavigation = [
-    { id: 'settings', name: 'Настройки', icon: Settings, href: '/settings' },
-    { id: 'help', name: 'Помощь', icon: HelpCircle, href: '/help' },
+    { id: 'settings', name: 'Настройки', icon: '⚙️', href: '/settings' },
+    { id: 'help', name: 'Помощь', icon: '❓', href: '/help' },
   ];
 
   const planData = {
@@ -40,58 +28,150 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="w-64 h-screen bg-gray-900/95 backdrop-blur-md border-r border-gray-700/50 flex flex-col">
+    <div style={{
+      width: '256px',
+      height: '100vh',
+      background: 'rgba(17, 24, 39, 0.95)',
+      backdropFilter: 'blur(12px)',
+      borderRight: '1px solid rgba(75, 85, 99, 0.5)',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
       {/* Logo */}
-      <div className="p-6 border-b border-gray-700/50">
-        <Link href="/dashboard" className="flex items-center space-x-3">
-          <div className="relative">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <Bot className="h-5 w-5 text-white" />
+      <div style={{
+        padding: '24px',
+        borderBottom: '1px solid rgba(75, 85, 99, 0.5)'
+      }}>
+        <Link href="/dashboard" style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          textDecoration: 'none'
+        }}>
+          <div style={{ position: 'relative' }}>
+            <div style={{
+              width: '32px',
+              height: '32px',
+              background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+              borderRadius: '8px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px'
+            }}>
+              🤖
             </div>
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full border-2 border-gray-900"></div>
+            <div style={{
+              position: 'absolute',
+              top: '-4px',
+              right: '-4px',
+              width: '12px',
+              height: '12px',
+              background: '#34d399',
+              borderRadius: '50%',
+              border: '2px solid #111827'
+            }}></div>
           </div>
           <div>
-            <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 style={{
+              fontSize: '20px',
+              fontWeight: 'bold',
+              background: 'linear-gradient(to right, #60a5fa, #a78bfa)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              margin: 0
+            }}>
               BotCraft
             </h1>
-            <p className="text-xs text-gray-500">v2.1.0</p>
+            <p style={{
+              fontSize: '12px',
+              color: '#6b7280',
+              margin: 0
+            }}>v2.1.0</p>
           </div>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      <nav style={{
+        flex: 1,
+        padding: '16px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px'
+      }}>
         {/* Main Navigation */}
-        <div className="space-y-1">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {mainNavigation.map((item) => {
-            const Icon = item.icon;
             const isActive = pathname === item.href;
             
             return (
               <Link
                 key={item.id}
                 href={item.href}
-                className={`w-full group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30 shadow-lg' 
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700/30'
-                }`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '10px 12px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s',
+                  background: isActive 
+                    ? 'linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))'
+                    : 'transparent',
+                  color: isActive ? '#ffffff' : '#9ca3af',
+                  border: isActive ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.color = '#ffffff';
+                    e.currentTarget.style.background = 'rgba(75, 85, 99, 0.3)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.color = '#9ca3af';
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
               >
-                <Icon className={`mr-3 h-5 w-5 transition-colors ${
-                  isActive ? 'text-blue-400' : 'text-gray-500 group-hover:text-gray-300'
-                }`} />
-                <span className="flex-1 text-left">{item.name}</span>
+                <span style={{ 
+                  marginRight: '12px', 
+                  fontSize: '16px',
+                  color: isActive ? '#60a5fa' : '#6b7280'
+                }}>
+                  {item.icon}
+                </span>
+                <span style={{ flex: 1 }}>{item.name}</span>
                 
                 {/* Badge */}
                 {item.badge && (
-                  <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-full">
+                  <span style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '2px 8px',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    background: 'linear-gradient(to right, #22c55e, #16a34a)',
+                    color: 'white',
+                    borderRadius: '12px'
+                  }}>
                     {item.badge}
                   </span>
                 )}
                 
                 {/* Active Indicator */}
                 {isActive && (
-                  <ChevronRight className="h-4 w-4 text-blue-400" />
+                  <span style={{ 
+                    marginLeft: '8px', 
+                    color: '#60a5fa',
+                    fontSize: '12px'
+                  }}>
+                    ▶
+                  </span>
                 )}
               </Link>
             );
@@ -99,28 +179,56 @@ export default function Sidebar() {
         </div>
 
         {/* Divider */}
-        <div className="my-6 border-t border-gray-700/50"></div>
+        <div style={{
+          margin: '24px 0',
+          borderTop: '1px solid rgba(75, 85, 99, 0.5)'
+        }}></div>
 
         {/* Secondary Navigation */}
-        <div className="space-y-1">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
           {secondaryNavigation.map((item) => {
-            const Icon = item.icon;
             const isActive = pathname === item.href;
             
             return (
               <Link
                 key={item.id}
                 href={item.href}
-                className={`w-full group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30' 
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700/30'
-                }`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '10px 12px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s',
+                  background: isActive 
+                    ? 'linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))'
+                    : 'transparent',
+                  color: isActive ? '#ffffff' : '#9ca3af',
+                  border: isActive ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.color = '#ffffff';
+                    e.currentTarget.style.background = 'rgba(75, 85, 99, 0.3)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.color = '#9ca3af';
+                    e.currentTarget.style.background = 'transparent';
+                  }
+                }}
               >
-                <Icon className={`mr-3 h-5 w-5 transition-colors ${
-                  isActive ? 'text-blue-400' : 'text-gray-500 group-hover:text-gray-300'
-                }`} />
-                <span className="flex-1 text-left">{item.name}</span>
+                <span style={{ 
+                  marginRight: '12px', 
+                  fontSize: '16px',
+                  color: isActive ? '#60a5fa' : '#6b7280'
+                }}>
+                  {item.icon}
+                </span>
+                <span style={{ flex: 1 }}>{item.name}</span>
               </Link>
             );
           })}
@@ -128,64 +236,150 @@ export default function Sidebar() {
       </nav>
 
       {/* Plan Information */}
-      <div className="p-4 border-t border-gray-700/50">
-        <div className="relative group">
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-lg blur opacity-20 group-hover:opacity-30 transition duration-300"></div>
-          <div className="relative bg-gray-800/80 backdrop-blur-sm border border-gray-700/50 rounded-lg p-4">
+      <div style={{
+        padding: '16px',
+        borderTop: '1px solid rgba(75, 85, 99, 0.5)'
+      }}>
+        <div style={{ position: 'relative' }}>
+          <div style={{
+            position: 'absolute',
+            inset: '-2px',
+            background: 'linear-gradient(to right, #22c55e, #3b82f6)',
+            borderRadius: '8px',
+            opacity: 0.2,
+            filter: 'blur(4px)'
+          }}></div>
+          
+          <div style={{
+            position: 'relative',
+            background: 'rgba(55, 65, 81, 0.8)',
+            backdropFilter: 'blur(4px)',
+            border: '1px solid rgba(75, 85, 99, 0.5)',
+            borderRadius: '8px',
+            padding: '16px'
+          }}>
             {/* Plan Badge */}
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center space-x-2">
-                <Crown className="h-4 w-4 text-yellow-400" />
-                <span className="text-sm font-medium text-white">{planData.name}</span>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '12px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <span style={{ 
+                  fontSize: '16px', 
+                  color: '#facc15' 
+                }}>👑</span>
+                <span style={{
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  color: '#ffffff'
+                }}>{planData.name}</span>
               </div>
-              <span className="text-xs text-emerald-400 font-medium">АКТИВЕН</span>
+              <span style={{
+                fontSize: '12px',
+                color: '#22c55e',
+                fontWeight: '500'
+              }}>АКТИВЕН</span>
             </div>
 
             {/* Usage Bars */}
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {/* Bots Usage */}
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">Боты</span>
-                  <span className="text-emerald-400 font-medium">
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: '12px',
+                  marginBottom: '4px'
+                }}>
+                  <span style={{ color: '#9ca3af' }}>Боты</span>
+                  <span style={{
+                    color: '#22c55e',
+                    fontWeight: '500'
+                  }}>
                     {planData.bots.used}/{planData.bots.total}
                   </span>
                 </div>
-                <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-500 relative"
-                    style={{ width: `${(planData.bots.used / planData.bots.total) * 100}%` }}
-                  >
-                    <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
-                  </div>
+                <div style={{
+                  height: '8px',
+                  background: '#374151',
+                  borderRadius: '4px',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${(planData.bots.used / planData.bots.total) * 100}%`,
+                    background: 'linear-gradient(to right, #22c55e, #16a34a)',
+                    transition: 'all 0.5s'
+                  }}></div>
                 </div>
               </div>
 
               {/* Messages Usage */}
               <div>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-400">Сообщения</span>
-                  <span className="text-blue-400 font-medium">
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: '12px',
+                  marginBottom: '4px'
+                }}>
+                  <span style={{ color: '#9ca3af' }}>Сообщения</span>
+                  <span style={{
+                    color: '#3b82f6',
+                    fontWeight: '500'
+                  }}>
                     {planData.messages.used.toLocaleString()}/{planData.messages.total.toLocaleString()}
                   </span>
                 </div>
-                <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-500 relative"
-                    style={{ width: `${(planData.messages.used / planData.messages.total) * 100}%` }}
-                  >
-                    <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
-                  </div>
+                <div style={{
+                  height: '8px',
+                  background: '#374151',
+                  borderRadius: '4px',
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    height: '100%',
+                    width: `${(planData.messages.used / planData.messages.total) * 100}%`,
+                    background: 'linear-gradient(to right, #3b82f6, #2563eb)',
+                    transition: 'all 0.5s'
+                  }}></div>
                 </div>
               </div>
             </div>
 
             {/* Upgrade Button */}
-            <button className="w-full mt-4 px-3 py-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-sm font-medium rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95">
-              <div className="flex items-center justify-center space-x-2">
-                <Crown className="h-4 w-4" />
-                <span>Улучшить план</span>
-              </div>
+            <button style={{
+              width: '100%',
+              marginTop: '16px',
+              padding: '8px 12px',
+              background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+              color: 'white',
+              fontSize: '14px',
+              fontWeight: '500',
+              borderRadius: '8px',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(to right, #2563eb, #7c3aed)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'linear-gradient(to right, #3b82f6, #8b5cf6)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}>
+              <span>👑</span>
+              <span>Улучшить план</span>
             </button>
           </div>
         </div>
