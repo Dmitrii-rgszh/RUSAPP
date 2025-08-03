@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String
+  emailVerified DateTime?
+  image         String?
+  plan          Plan      @default(FREE)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  accounts      Account[]
+  sessions      Session[]
+  bots          Bot[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Bot {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform    Platform
+  isActive    Boolean   @default(false)
+  token       String?   @db.Text
+  webhookUrl  String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  flows       BotFlow[]
+  messages    Message[]
+  contacts    Contact[]
+}
+
+model BotFlow {
+  id        String   @id @default(cuid())
+  botId     String
+  bot       Bot      @relation(fields: [botId], references: [id], onDelete: Cascade)
+  name      String   @default("Main Flow")
+  nodes     Json
+  edges     Json
+  isActive  Boolean  @default(true)
+  version   Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  botId     String
+  bot       Bot      @relation(fields: [botId], references: [id], onDelete: Cascade)
+  contactId String
+  contact   Contact  @relation(fields: [contactId], references: [id])
+  text      String?
+  type      MessageType
+  direction Direction
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model Contact {
+  id         String   @id @default(cuid())
+  botId      String
+  bot        Bot      @relation(fields: [botId], references: [id], onDelete: Cascade)
+  platformId String
+  name       String?
+  phone      String?
+  email      String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  messages   Message[]
+  
+  @@unique([botId, platformId])
+}
+
+enum Plan {
+  FREE
+  STARTER
+  BUSINESS
+  SCALE
+}
+
+enum Platform {
+  TELEGRAM
+  WHATSAPP
+  VK
+  WEBCHAT
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  AUDIO
+  DOCUMENT
+  BUTTON
+}
+
+enum Direction {
+  INBOUND
+  OUTBOUND
+}
