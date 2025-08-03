@@ -1,40 +1,46 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
+import { useUser } from '@/hooks/useUser';
+import { useUserStats } from '@/hooks/useUserStats';
 
 export default function DashboardPage() {
+  const { user } = useUser();
+  const { stats: userStats, isLoading } = useUserStats();
+
   const stats = [
     { 
       id: 1, 
       icon: '🤖', 
-      value: '3', 
+      value: userStats?.bots.active.toString() || '0', 
       label: 'Активных ботов', 
       change: '+2', 
-      changeType: 'positive' 
+      changeType: 'positive' as const
     },
     { 
       id: 2, 
       icon: '💬', 
-      value: '1,234', 
-      label: 'Сообщений сегодня', 
+      value: userStats?.messages.toString() || '0', 
+      label: 'Сообщений всего', 
       change: '+12%', 
-      changeType: 'positive' 
+      changeType: 'positive' as const
     },
     { 
       id: 3, 
       icon: '👥', 
-      value: '342', 
-      label: 'Пользователи', 
+      value: userStats?.contacts.toString() || '0', 
+      label: 'Контактов', 
       change: '+8%', 
-      changeType: 'positive' 
+      changeType: 'positive' as const
     },
     { 
       id: 4, 
       icon: '📈', 
-      value: '89%', 
-      label: 'Конверсия', 
-      change: '-3%', 
-      changeType: 'negative' 
+      value: userStats?.bots.total.toString() || '0', 
+      label: 'Всего ботов', 
+      change: '-', 
+      changeType: 'neutral' as const
     }
   ];
 
@@ -56,40 +62,57 @@ export default function DashboardPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">
-            Добро пожаловать в BotCraft
+            Добро пожаловать{user?.name ? `, ${user.name}` : ' в BotCraft'}!
           </h1>
           <p className="text-gray-400">
             Управляйте своими ботами и анализируйте их эффективность
           </p>
         </div>
-        <button className="btn-gradient flex items-center gap-2">
+        <Link href="/bots/create" className="btn-gradient flex items-center gap-2">
           <span>🚀</span>
           Создать бота
-        </button>
+        </Link>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => (
-          <div key={stat.id} className="card-glass group hover:scale-105 transition-transform duration-200">
-            <div className="flex justify-between items-center mb-4">
-              <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                {stat.icon}
+        {isLoading ? (
+          // Skeleton loading
+          <>
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="card-glass animate-pulse">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="w-12 h-12 bg-gray-700 rounded-lg"></div>
+                  <div className="w-12 h-4 bg-gray-700 rounded"></div>
+                </div>
+                <div className="h-8 bg-gray-700 rounded w-20 mb-2"></div>
+                <div className="h-4 bg-gray-700 rounded w-24"></div>
               </div>
-              <span className={`text-sm font-medium ${
-                stat.changeType === 'positive' ? 'text-green-400' : 'text-red-400'
-              }`}>
-                {stat.change}
-              </span>
+            ))}
+          </>
+        ) : (
+          stats.map((stat) => (
+            <div key={stat.id} className="card-glass group hover:scale-105 transition-transform duration-200">
+              <div className="flex justify-between items-center mb-4">
+                <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                  {stat.icon}
+                </div>
+                <span className={`text-sm font-medium ${
+                  stat.changeType === 'positive' ? 'text-green-400' : 
+                  stat.changeType === 'negative' ? 'text-red-400' : 'text-gray-400'
+                }`}>
+                  {stat.change}
+                </span>
+              </div>
+              <div className="text-2xl font-bold text-white mb-1">
+                {stat.value}
+              </div>
+              <div className="text-sm text-gray-400">
+                {stat.label}
+              </div>
             </div>
-            <div className="text-2xl font-bold text-white mb-1">
-              {stat.value}
-            </div>
-            <div className="text-sm text-gray-400">
-              {stat.label}
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Content Grid */}

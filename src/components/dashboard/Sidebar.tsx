@@ -3,6 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useUser } from '@/hooks/useUser';
+import { signOut } from 'next-auth/react';
 
 interface NavItem {
   id: string;
@@ -14,6 +16,7 @@ interface NavItem {
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { user, isLoading } = useUser();
 
   const mainNavigation: NavItem[] = [
     { id: 'dashboard', name: 'Главная', href: '/dashboard', icon: '🏠' },
@@ -177,18 +180,38 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* User Profile */}
+      {/* User Profile - ВОТ ТУТ ИСПРАВЛЕНИЕ! */}
       <div className="p-4 border-t border-gray-700/50">
-        <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700/30 transition-colors cursor-pointer">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-sm font-medium text-white">
-            JD
+        {isLoading ? (
+          <div className="animate-pulse flex items-center gap-3">
+            <div className="w-8 h-8 bg-gray-700 rounded-full"></div>
+            <div className="flex-1">
+              <div className="h-4 bg-gray-700 rounded w-24 mb-1"></div>
+              <div className="h-3 bg-gray-700 rounded w-32"></div>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">John Doe</p>
-            <p className="text-xs text-gray-400 truncate">john@example.com</p>
+        ) : (
+          <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700/30 transition-colors">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-sm font-medium text-white">
+              {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || user?.email?.[0].toUpperCase() || '?'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white truncate">
+                {user?.name || 'Пользователь'}
+              </p>
+              <p className="text-xs text-gray-400 truncate">
+                {user?.email}
+              </p>
+            </div>
+            <button
+              onClick={() => signOut({ callbackUrl: '/' })}
+              className="text-gray-400 hover:text-white text-sm transition-colors p-1"
+              title="Выйти"
+            >
+              🚪
+            </button>
           </div>
-          <span className="text-gray-400 text-sm">⚙️</span>
-        </div>
+        )}
       </div>
     </aside>
   );
