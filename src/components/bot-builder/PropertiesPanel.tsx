@@ -110,36 +110,6 @@ export function PropertiesPanel({ selectedNode, updateNodeData }: PropertiesPane
                 />
               </div>
             )}
-
-            {selectedNode.data.messageType === "file" && (
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  URL файла
-                </label>
-                <input
-                  type="url"
-                  value={selectedNode.data.fileUrl || ""}
-                  onChange={(e) => handleChange("fileUrl", e.target.value)}
-                  className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
-                  placeholder="https://example.com/file.pdf"
-                />
-              </div>
-            )}
-
-            {selectedNode.data.messageType === "video" && (
-              <div>
-                <label className="block text-sm font-semibold text-gray-300 mb-2">
-                  URL видео
-                </label>
-                <input
-                  type="url"
-                  value={selectedNode.data.videoUrl || ""}
-                  onChange={(e) => handleChange("videoUrl", e.target.value)}
-                  className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
-                  placeholder="https://example.com/video.mp4"
-                />
-              </div>
-            )}
           </>
         )}
 
@@ -181,3 +151,200 @@ export function PropertiesPanel({ selectedNode, updateNodeData }: PropertiesPane
                       onClick={() => {
                         const newButtons = [...(selectedNode.data.buttons || [])];
                         newButtons.splice(index, 1);
+                        handleChange("buttons", newButtons);
+                      }}
+                      className="px-3 py-3 text-red-400 hover:bg-red-500/20 rounded-xl transition-all duration-200"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+                
+                <button
+                  onClick={() => {
+                    const newButtons = [...(selectedNode.data.buttons || []), ""];
+                    handleChange("buttons", newButtons);
+                  }}
+                  className="w-full px-4 py-3 border-2 border-dashed border-white/30 rounded-xl text-sm text-gray-400 hover:border-white/50 hover:text-white transition-all duration-200"
+                >
+                  + Добавить кнопку
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* CONDITION NODE */}
+        {selectedNode.type === "condition" && (
+          <>
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Переменная для проверки
+              </label>
+              <input
+                type="text"
+                value={selectedNode.data.variable || ""}
+                onChange={(e) => handleChange("variable", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+                placeholder="last_user_message"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Тип условия
+              </label>
+              <select
+                value={selectedNode.data.conditionType || "equals"}
+                onChange={(e) => handleChange("conditionType", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+              >
+                <option value="equals" className="bg-gray-800">Равно</option>
+                <option value="contains" className="bg-gray-800">Содержит</option>
+                <option value="starts_with" className="bg-gray-800">Начинается с</option>
+                <option value="regex" className="bg-gray-800">Регулярное выражение</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Значение для сравнения
+              </label>
+              <input
+                type="text"
+                value={selectedNode.data.conditionValue || ""}
+                onChange={(e) => handleChange("conditionValue", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+                placeholder="Введите значение..."
+              />
+            </div>
+          </>
+        )}
+
+        {/* QUESTION NODE */}
+        {selectedNode.type === "question" && (
+          <>
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Текст вопроса
+              </label>
+              <textarea
+                value={selectedNode.data.questionText || ""}
+                onChange={(e) => handleChange("questionText", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all resize-none"
+                rows={3}
+                placeholder="Как вас зовут?"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Тип ответа
+              </label>
+              <select
+                value={selectedNode.data.questionType || "text"}
+                onChange={(e) => handleChange("questionType", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+              >
+                <option value="text" className="bg-gray-800">Текст</option>
+                <option value="number" className="bg-gray-800">Число</option>
+                <option value="email" className="bg-gray-800">Email</option>
+                <option value="phone" className="bg-gray-800">Телефон</option>
+                <option value="date" className="bg-gray-800">Дата</option>
+                <option value="choice" className="bg-gray-800">Выбор из списка</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Имя переменной
+              </label>
+              <input
+                type="text"
+                value={selectedNode.data.variableName || ""}
+                onChange={(e) => handleChange("variableName", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+                placeholder="user_name"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Подсказка для пользователя
+              </label>
+              <input
+                type="text"
+                value={selectedNode.data.placeholder || ""}
+                onChange={(e) => handleChange("placeholder", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+                placeholder="Введите ваше имя"
+              />
+            </div>
+
+            <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10">
+              <label htmlFor="required" className="text-sm font-medium text-gray-300">
+                Обязательное поле
+              </label>
+              <input
+                type="checkbox"
+                id="required"
+                checked={selectedNode.data.required || false}
+                onChange={(e) => handleChange("required", e.target.checked)}
+                className="h-4 w-4 text-indigo-600 bg-white/10 border-white/20 rounded focus:ring-indigo-500 focus:ring-2"
+              />
+            </div>
+          </>
+        )}
+
+        {/* WEBHOOK NODE */}
+        {selectedNode.type === "webhook" && (
+          <>
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                URL
+              </label>
+              <input
+                type="url"
+                value={selectedNode.data.url || ""}
+                onChange={(e) => handleChange("url", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+                placeholder="https://api.example.com/webhook"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                HTTP метод
+              </label>
+              <select
+                value={selectedNode.data.method || "GET"}
+                onChange={(e) => handleChange("method", e.target.value)}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+              >
+                <option value="GET" className="bg-gray-800">GET</option>
+                <option value="POST" className="bg-gray-800">POST</option>
+                <option value="PUT" className="bg-gray-800">PUT</option>
+                <option value="DELETE" className="bg-gray-800">DELETE</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-300 mb-2">
+                Таймаут (мс)
+              </label>
+              <input
+                type="number"
+                value={selectedNode.data.timeout || 5000}
+                onChange={(e) => handleChange("timeout", parseInt(e.target.value))}
+                className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+                min="1000"
+                max="30000"
+                step="1000"
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
