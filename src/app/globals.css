@@ -254,3 +254,161 @@
     @apply bg-white text-black;
   }
 }
+
+/* ======================================
+   СТИЛИ ДЛЯ ЛЕНДИНГА
+   ====================================== */
+
+/* Основной контейнер */
+.landing-page {
+  @apply min-h-screen bg-gradient-to-br from-[#0F0C29] via-[#24243e] to-[#16213e] text-white overflow-x-hidden;
+}
+
+/* Header */
+.landing-header {
+  @apply fixed top-0 left-0 right-0 z-50 py-5 px-10 backdrop-blur-xl bg-black/20 border-b border-white/10;
+}
+
+.landing-nav {
+  @apply flex justify-between items-center max-w-7xl mx-auto;
+}
+
+.landing-logo {
+  @apply text-2xl font-bold bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-purple-light)] bg-clip-text text-transparent;
+}
+
+.landing-nav-links {
+  @apply flex gap-8 items-center;
+}
+
+.landing-nav-link {
+  @apply text-gray-400 hover:text-white transition-colors relative font-medium;
+}
+
+/* Hero Section */
+.landing-hero {
+  @apply min-h-screen flex items-center justify-center px-10 py-32 relative;
+}
+
+.landing-hero-content {
+  @apply max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center;
+}
+
+.landing-hero-text h1 {
+  @apply text-5xl lg:text-6xl font-extrabold mb-6 leading-tight;
+}
+
+.landing-hero-text p {
+  @apply text-xl text-gray-400 mb-10 leading-relaxed;
+}
+
+.landing-hero-buttons {
+  @apply flex gap-5 mb-16;
+}
+
+/* Features Section */
+.landing-features {
+  @apply py-24 px-10 bg-black/20;
+}
+
+.landing-features-container {
+  @apply max-w-7xl mx-auto text-center;
+}
+
+.landing-features h2 {
+  @apply text-4xl lg:text-5xl font-bold mb-5;
+}
+
+.landing-features-grid {
+  @apply grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16;
+}
+
+.landing-feature-card {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-10 text-center transition-all hover:transform hover:-translate-y-2 hover:shadow-2xl;
+}
+
+.landing-feature-icon {
+  @apply text-5xl mb-5 block;
+}
+
+.landing-feature-title {
+  @apply text-2xl font-semibold mb-4;
+}
+
+.landing-feature-description {
+  @apply text-gray-400 leading-relaxed;
+}
+
+/* Platforms */
+.landing-platforms {
+  @apply flex gap-5 items-center flex-wrap;
+}
+
+.landing-platform-card {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl px-6 py-4 text-center transition-all hover:transform hover:-translate-y-1 hover:bg-white/10;
+}
+
+.landing-platform-icon {
+  @apply text-3xl mb-2;
+}
+
+.landing-platform-name {
+  @apply text-sm font-semibold;
+}
+
+/* Buttons */
+.landing-primary-btn {
+  @apply bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-purple-light)] 
+         text-white font-semibold px-8 py-4 rounded-xl text-lg
+         hover:shadow-lg hover:shadow-purple-500/25 
+         transform hover:-translate-y-0.5 transition-all duration-200
+         inline-block text-center;
+}
+
+.landing-secondary-btn {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10
+         text-white font-semibold px-8 py-4 rounded-xl text-lg
+         hover:bg-white/10 hover:border-white/20 
+         transform hover:-translate-y-0.5 transition-all duration-200
+         inline-block text-center;
+}
+
+/* Старые стили для совместимости */
+.btn-primary {
+  @apply bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-purple-light)] 
+         text-white font-semibold px-6 py-3 rounded-lg
+         hover:shadow-lg hover:shadow-purple-500/25 
+         transform hover:-translate-y-0.5 transition-all duration-200;
+}
+
+/* Компактная версия для header */
+.btn-gradient-sm {
+  @apply bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-purple-light)] 
+         text-white font-semibold px-4 py-2 rounded-lg text-sm
+         hover:shadow-lg hover:shadow-purple-500/25 
+         transform hover:-translate-y-0.5 transition-all duration-200;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .landing-hero-text h1 {
+    @apply text-4xl;
+  }
+  
+  .landing-hero-content {
+    @apply grid-cols-1 text-center;
+  }
+  
+  .landing-hero-buttons {
+    @apply flex-col w-full;
+  }
+  
+  .landing-primary-btn,
+  .landing-secondary-btn {
+    @apply w-full;
+  }
+  
+  .landing-nav-links {
+    @apply hidden;
+  }
+}
