@@ -1,1022 +1,256 @@
-
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Убираем дефолтные отступы */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Основные переменные цветов */
-:root {
-  --background-start: #0F0C29;
-  --background-end: #24243e;
-  --text-primary: #FFFFFF;
-  --text-secondary: #A1A1AA;
-  --text-muted: #71717A;
-  --accent-primary: #818CF8;
-  --accent-secondary: #A78BFA;
-  --accent-green: #4ADE80;
-  --accent-green-muted: #22C55E;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --card-bg: rgba(255, 255, 255, 0.05);
-
-  /* Дополнительные переменные для лендинга */
-  --landing-primary: #6366f1;
-  --landing-secondary: #8b5cf6;
-  --landing-success: #10b981;
-  --landing-error: #ef4444;
-
-  /* Добавить переменную шрифта */
-  --font-inter: var(--font-inter);
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
-}
-
-/* Глобальные стили */
-html, body {
-  height: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--text-primary);
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Анимации */
-@keyframes blob {
-  0% { 
-    transform: translate(0px, 0px) scale(1); 
-  }
-  33% { 
-    transform: translate(30px, -50px) scale(1.1); 
-  }
-  66% { 
-    transform: translate(-20px, 20px) scale(0.9); 
-  }
-  100% { 
-    transform: translate(0px, 0px) scale(1); 
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { 
-    opacity: 1; 
-  }
-  50% { 
-    opacity: 0.5; 
-  }
-}
-
-@keyframes float {
-  0%, 100% { 
-    transform: translateY(0px); 
-  }
-  50% { 
-    transform: translateY(-20px); 
-  }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Градиентный текст */
-.gradient-text {
-  background: linear-gradient(135deg, #818CF8 0%, #A78BFA 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-}
-
-/* Стеклянный эффект */
-.glass {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.glass-hover:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Эффект свечения */
-.glow-purple {
-  box-shadow: 0 0 40px rgba(129, 140, 248, 0.3);
-}
-
-.glow-green {
-  box-shadow: 0 0 40px rgba(74, 222, 128, 0.3);
-}
-
-/* Кастомные кнопки если компонент Button не работает */
-.btn-primary {
-  background: linear-gradient(135deg, #818CF8 0%, #A78BFA 100%);
-  color: white;
-  padding: 16px 32px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 18px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 24px rgba(129, 140, 248, 0.25);
-}
-
-.btn-primary:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 32px rgba(129, 140, 248, 0.4);
-}
-
-.btn-outline {
-  background: transparent;
-  color: #4ADE80;
-  padding: 16px 32px;
-  border: 2px solid #4ADE80;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-outline:hover {
-  background: rgba(74, 222, 128, 0.1);
-}
-
-/* Кастомные скроллбары */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* ======================================
-   СТИЛИ ДЛЯ ЛЕНДИНГА
-   ====================================== */
-
-/* Основной контейнер лендинга */
-.landing-page {
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 50%, #16213e 100%);
-  color: var(--text-primary);
-  overflow-x: hidden;
-  min-height: 100vh;
-}
-
-/* Header лендинга */
-.landing-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  padding: 20px 40px;
-  backdrop-filter: blur(20px);
-  background: rgba(15, 15, 35, 0.8);
-  border-bottom: 1px solid var(--border-color);
-}
-
-.landing-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.landing-logo {
-  font-size: 24px;
-  font-weight: 700;
-  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.landing-nav-links {
-  display: flex;
-  gap: 32px;
-  align-items: center;
-}
-
-.landing-nav-link {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.landing-nav-link:hover {
-  color: var(--text-primary);
-  transform: translateY(-1px);
-}
-
-.landing-nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-  transition: width 0.3s ease;
-}
-
-.landing-nav-link:hover::after {
-  width: 100%;
-}
-
-/* Hero секция */
-.landing-hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 120px 40px 60px;
-  position: relative;
-  overflow: hidden;
-}
-
-.landing-hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(129, 140, 248, 0.1) 0%, transparent 70%);
-  animation: rotate 20s linear infinite;
-}
-
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.landing-hero-content {
-  max-width: 1200px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-  position: relative;
-  z-index: 10;
-}
-
-.landing-hero-text h1 {
-  font-size: 64px;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 24px;
-  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.landing-hero-text .highlight {
-  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.landing-hero-text p {
-  font-size: 20px;
-  color: var(--text-secondary);
-  margin-bottom: 40px;
-  line-height: 1.6;
-}
-
-.landing-hero-buttons {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 60px;
-}
-
-.landing-primary-btn {
-  padding: 16px 32px;
-  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-  border: none;
-  border-radius: 16px;
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 32px rgba(129, 140, 248, 0.3);
-}
-
-.landing-primary-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 48px rgba(129, 140, 248, 0.4);
-}
-
-.landing-secondary-btn {
-  padding: 16px 32px;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.landing-secondary-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.landing-platforms {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.landing-platform-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  padding: 16px 24px;
-  text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.landing-platform-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-}
-
-.landing-platform-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
-.landing-platform-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-/* Мокап телефона */
-.landing-phone-mockup {
-  width: 320px;
-  height: 640px;
-  background: linear-gradient(145deg, #1e1e2e, #2d2d3d);
-  border-radius: 40px;
-  padding: 20px;
-  position: relative;
-  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.6);
-  animation: float 6s ease-in-out infinite;
-}
-
-.landing-phone-screen {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(145deg, #0f1419, #1a1f2e);
-  border-radius: 30px;
-  padding: 30px 20px;
-  overflow: hidden;
-  position: relative;
-}
-
-.landing-chat-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.landing-bot-avatar {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.landing-chat-messages {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.landing-message {
-  max-width: 80%;
-  padding: 12px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  line-height: 1.4;
-  animation: slideIn 0.5s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.landing-message.bot {
-  background: rgba(129, 140, 248, 0.2);
-  border: 1px solid rgba(129, 140, 248, 0.3);
-  align-self: flex-start;
-}
-
-.landing-message.user {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  align-self: flex-end;
-}
-
-.landing-quick-replies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 16px;
-}
-
-.landing-quick-reply {
-  padding: 8px 16px;
-  background: rgba(129, 140, 248, 0.1);
-  border: 1px solid rgba(129, 140, 248, 0.3);
-  border-radius: 20px;
-  font-size: 12px;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.landing-quick-reply:hover {
-  background: rgba(129, 140, 248, 0.2);
-  transform: scale(1.05);
-}
-
-.landing-typing-indicator {
-  display: flex;
-  gap: 4px;
-  padding: 12px 16px;
-  background: rgba(129, 140, 248, 0.1);
-  border: 1px solid rgba(129, 140, 248, 0.2);
-  border-radius: 20px;
-  align-self: flex-start;
-  margin-top: 16px;
-}
-
-.landing-typing-dot {
-  width: 8px;
-  height: 8px;
-  background: rgba(129, 140, 248, 0.7);
-  border-radius: 50%;
-  animation: typingDot 1.4s infinite ease-in-out;
-}
-
-.landing-typing-dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.landing-typing-dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes typingDot {
-  0%, 60%, 100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  30% {
-    transform: scale(1.2);
-    opacity: 1;
-  }
-}
-
-/* Features секция */
-.landing-features {
-  padding: 100px 40px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(15, 15, 35, 0.5) 100%);
-}
-
-.landing-features-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.landing-features h2 {
-  font-size: 48px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.landing-features p {
-  font-size: 20px;
-  color: var(--text-secondary);
-  margin-bottom: 60px;
-}
-
-.landing-features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-  margin-top: 60px;
-}
-
-.landing-feature-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: 40px 30px;
-  text-align: center;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  position: relative;
-  overflow: hidden;
-}
-
-.landing-feature-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.5), transparent);
-}
-
-.landing-feature-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-8px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.landing-feature-icon {
-  font-size: 48px;
-  margin-bottom: 20px;
-  display: block;
-}
-
-.landing-feature-title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 16px;
-  color: var(--text-primary);
-}
-
-.landing-feature-description {
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* Плавная прокрутка для якорных ссылок */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Дополнительная анимация для лендинга */
-.landing-page * {
-  animation-fill-mode: both;
-}
-
-.landing-hero-text h1 {
-  animation: slideInLeft 1s ease-out 0.2s;
-}
-
-.landing-hero-text p {
-  animation: slideInLeft 1s ease-out 0.4s;
-}
-
-.landing-hero-buttons {
-  animation: slideInLeft 1s ease-out 0.6s;
-}
-
-.landing-phone-mockup {
-  animation: slideInRight 1s ease-out 0.3s;
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Исправление для мобильных устройств */
-@media (max-width: 768px) {
-  .gradient-text {
-    font-size: 2.5rem;
+@layer base {
+  :root {
+    /* shadcn/ui переменные (светлая тема) */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    
+    /* Кастомные переменные для приложения */
+    --gradient-start: #0F0C29;
+    --gradient-end: #24243e;
+    --accent-purple: #818CF8;
+    --accent-purple-light: #A78BFA;
+    --accent-green: #4ADE80;
+    --accent-green-light: #22C55E;
   }
 
-  h1 {
-    font-size: 3rem !important;
-    line-height: 1.2 !important;
+  .dark {
+    /* shadcn/ui переменные (темная тема) */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
   }
-
-  .btn-primary, .btn-outline {
-    padding: 12px 24px;
-    font-size: 16px;
-  }
-
-  /* Лендинг на мобильных */
-  .landing-hero-content {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center;
-  }
-
-  .landing-hero-text h1 {
-    font-size: 48px;
-  }
-
-  .landing-phone-mockup {
-    width: 280px;
-    height: 560px;
-  }
-
-  .landing-hero-buttons {
-    justify-content: center;
-  }
-
-  .landing-platforms {
-    justify-content: center;
-  }
-
-  .landing-nav-links {
-    display: none;
-  }
-}
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
-
-.dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+  
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
-
-/* ======================================
-   СТИЛИ ДЛЯ ДАШБОРДА
-   ====================================== */
-
-/* Дополнительные утилиты для дашборда */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Анимации для появления элементов */
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-in-up {
-  animation: slideInUp 0.5s ease-out;
-}
-
-/* Улучшенные скроллбары для дашборда */
-.dashboard-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-
-.dashboard-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-}
-
-.dashboard-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-
-.dashboard-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-/* Эффект размытия для backdrop */
-.backdrop-blur-custom {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Пульсирующая анимация для индикаторов */
-.pulse-slow {
-  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Hover эффекты для карточек */
-.card-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-}
-
-/* Градиентные рамки */
-.gradient-border {
-  position: relative;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-  border: 1px solid transparent;
-  border-radius: 12px;
-}
-
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3));
-  border-radius: inherit;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: xor;
-  -webkit-mask-composite: xor;
-}
-
-/* Стили для select элементов */
-select {
-  background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23a1a1aa' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-size: 12px;
-}
-
-/* Responsive утилиты для дашборда */
-@media (max-width: 768px) {
-  .dashboard-sidebar {
-    transform: translateX(-100%);
-    position: fixed;
-    z-index: 50;
+@layer components {
+  /* Глобальные утилиты для темного фона */
+  .dark-gradient {
+    @apply bg-gradient-to-br from-[var(--gradient-start)] via-[var(--gradient-end)] to-gray-900;
   }
   
-  .dashboard-sidebar.open {
-    transform: translateX(0);
+  /* Стеклянный эффект */
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
   }
   
-  .dashboard-main {
-    margin-left: 0;
+  .glass-hover {
+    @apply hover:bg-white/10 hover:border-white/20 transition-all duration-300;
+  }
+  
+  /* Градиентный текст */
+  .gradient-text {
+    @apply bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-purple-light)] bg-clip-text text-transparent;
+  }
+  
+  /* Кнопки */
+  .btn-gradient {
+    @apply bg-gradient-to-r from-[var(--accent-purple)] to-[var(--accent-purple-light)] 
+           text-white font-semibold px-6 py-3 rounded-lg
+           hover:shadow-lg hover:shadow-purple-500/25 
+           transform hover:-translate-y-0.5 transition-all duration-200;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-[var(--accent-green)] text-[var(--accent-green)]
+           font-semibold px-6 py-3 rounded-lg
+           hover:bg-[var(--accent-green)]/10 transition-all duration-200;
+  }
+  
+  /* Карточки */
+  .card-glass {
+    @apply glass rounded-xl p-6 hover:shadow-xl transition-all duration-300;
+  }
+  
+  .card-gradient-border {
+    @apply relative bg-gray-800/50 backdrop-blur-xl rounded-xl p-6
+           before:absolute before:inset-0 before:rounded-xl before:p-[1px]
+           before:bg-gradient-to-r before:from-[var(--accent-purple)] before:to-[var(--accent-purple-light)]
+           before:-z-10;
+  }
+  
+  /* Анимации */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  
+  /* Статус индикаторы */
+  .status-dot {
+    @apply w-2 h-2 rounded-full;
+  }
+  
+  .status-active {
+    @apply status-dot bg-green-500 animate-pulse;
+  }
+  
+  .status-inactive {
+    @apply status-dot bg-gray-500;
+  }
+  
+  /* Скроллбар */
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-2;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-full hover:bg-white/30;
   }
 }
 
-/* Анимированные кнопки */
-.btn-animated {
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
+@layer utilities {
+  /* Дополнительные утилиты */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  
+  /* Градиентные фоны */
+  .bg-gradient-radial {
+    background: radial-gradient(circle at center, var(--tw-gradient-from), var(--tw-gradient-to));
+  }
+  
+  /* Размытые фоны для декоративных элементов */
+  .blur-blob {
+    @apply absolute rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob;
+  }
 }
 
-.btn-animated::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transition: left 0.5s;
+/* Кастомные анимации */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
-.btn-animated:hover::before {
-  left: 100%;
-}
-
-/* Статус индикаторы */
-.status-active {
-  background: rgb(34, 197, 94);
-  box-shadow: 0 0 0 0 rgba(34, 197, 94, 1);
-  animation: pulse-ring 1.5s infinite;
-}
-
-.status-inactive {
-  background: rgb(107, 114, 128);
-}
-
-@keyframes pulse-ring {
+@keyframes blob {
   0% {
-    transform: scale(0.33);
+    transform: translate(0px, 0px) scale(1);
   }
-  40%, 50% {
-    opacity: 0;
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
   }
   100% {
-    opacity: 0;
-    transform: scale(1.2);
+    transform: translate(0px, 0px) scale(1);
   }
 }
 
-/* Улучшенные tooltips */
-.tooltip {
-  position: relative;
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
-.tooltip::before {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0, 0, 0, 0.9);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s;
-  z-index: 1000;
+/* Оптимизация для производительности */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-.tooltip:hover::before {
-  opacity: 1;
-  visibility: visible;
-  bottom: calc(100% + 5px);
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .btn-gradient,
+  .btn-outline {
+    @apply px-4 py-2 text-sm;
+  }
+  
+  .card-glass,
+  .card-gradient-border {
+    @apply p-4;
+  }
+}
+
+/* Принт стили */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    @apply bg-white text-black;
+  }
 }

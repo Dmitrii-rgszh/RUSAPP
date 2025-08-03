@@ -3,657 +3,250 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 
-export default function BotsPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterPlatform, setFilterPlatform] = useState('all');
-  const [filterStatus, setFilterStatus] = useState('all');
+interface Bot {
+  id: string;
+  name: string;
+  description: string;
+  platform: 'telegram' | 'whatsapp' | 'vk';
+  isActive: boolean;
+  stats: {
+    messages: number;
+    users: number;
+    conversion: number;
+  };
+  lastActive: string;
+}
 
-  const bots = [
+export default function BotsPage() {
+  const [filter, setFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const bots: Bot[] = [
     {
-      id: 1,
-      name: 'Бот поддержки',
-      description: 'Автоматическая поддержка клиентов 24/7',
-      platform: 'TELEGRAM',
+      id: '1',
+      name: 'Поддержка 24/7',
+      description: 'Автоматический бот для обработки вопросов клиентов',
+      platform: 'telegram',
       isActive: true,
-      users: 234,
-      messages: 1547,
-      successRate: 89,
-      createdAt: '15.01.2024',
-      lastActivity: '2 мин назад',
-      template: 'Поддержка клиентов'
+      stats: {
+        messages: 523,
+        users: 89,
+        conversion: 92
+      },
+      lastActive: '2 минуты назад'
     },
     {
-      id: 2,
-      name: 'Бот продаж',
-      description: 'Воронка продаж и обработка заказов',
-      platform: 'WHATSAPP',
+      id: '2',
+      name: 'Продажи Bot',
+      description: 'Помогает клиентам выбрать и купить товары',
+      platform: 'whatsapp',
+      isActive: true,
+      stats: {
+        messages: 341,
+        users: 56,
+        conversion: 78
+      },
+      lastActive: '15 минут назад'
+    },
+    {
+      id: '3',
+      name: 'HR Assistant',
+      description: 'Отвечает на вопросы кандидатов и сотрудников',
+      platform: 'vk',
       isActive: false,
-      users: 156,
-      messages: 892,
-      successRate: 76,
-      createdAt: '10.01.2024',
-      lastActivity: '1 час назад',
-      template: 'Продажи'
-    },
-    {
-      id: 3,
-      name: 'HR бот',
-      description: 'Подбор кандидатов и собеседования',
-      platform: 'VK',
-      isActive: true,
-      users: 67,
-      messages: 234,
-      successRate: 94,
-      createdAt: '08.01.2024',
-      lastActivity: '15 мин назад',
-      template: 'HR и рекрутинг'
-    },
-    {
-      id: 4,
-      name: 'Бот заказов',
-      description: 'Прием заказов и оплата',
-      platform: 'TELEGRAM',
-      isActive: true,
-      users: 189,
-      messages: 567,
-      successRate: 82,
-      createdAt: '05.01.2024',
-      lastActivity: '5 мин назад',
-      template: 'Ресторан'
+      stats: {
+        messages: 156,
+        users: 34,
+        conversion: 85
+      },
+      lastActive: '3 часа назад'
     }
   ];
 
   const platformConfig = {
-    TELEGRAM: { 
-      name: 'Telegram', 
-      color: { bg: 'rgba(59, 130, 246, 0.2)', text: '#60a5fa', border: 'rgba(59, 130, 246, 0.3)' },
-      icon: '📱'
+    telegram: {
+      name: 'Telegram',
+      icon: '✈️',
+      color: {
+        bg: 'rgba(34, 158, 217, 0.2)',
+        text: '#229ed9',
+        border: 'rgba(34, 158, 217, 0.3)'
+      }
     },
-    WHATSAPP: { 
-      name: 'WhatsApp', 
-      color: { bg: 'rgba(34, 197, 94, 0.2)', text: '#22c55e', border: 'rgba(34, 197, 94, 0.3)' },
-      icon: '📞'
+    whatsapp: {
+      name: 'WhatsApp',
+      icon: '💬',
+      color: {
+        bg: 'rgba(37, 211, 102, 0.2)',
+        text: '#25d366',
+        border: 'rgba(37, 211, 102, 0.3)'
+      }
     },
-    VK: { 
-      name: 'ВКонтакте', 
-      color: { bg: 'rgba(139, 92, 246, 0.2)', text: '#a78bfa', border: 'rgba(139, 92, 246, 0.3)' },
-      icon: '🌐'
+    vk: {
+      name: 'VKontakte',
+      icon: '📱',
+      color: {
+        bg: 'rgba(0, 119, 255, 0.2)',
+        text: '#0077ff',
+        border: 'rgba(0, 119, 255, 0.3)'
+      }
     }
   };
 
   const filteredBots = bots.filter(bot => {
-    const matchesSearch = bot.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesPlatform = filterPlatform === 'all' || bot.platform === filterPlatform;
-    const matchesStatus = filterStatus === 'all' || 
-      (filterStatus === 'active' && bot.isActive) || 
-      (filterStatus === 'inactive' && !bot.isActive);
-    
-    return matchesSearch && matchesPlatform && matchesStatus;
+    if (filter !== 'all' && bot.platform !== filter) return false;
+    if (searchQuery && !bot.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    return true;
   });
 
   return (
-    <div style={{ 
-      padding: '24px',
-      background: 'linear-gradient(135deg, #1f2937, #111827)',
-      minHeight: '100vh',
-      color: 'white'
-    }}>
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '32px'
-      }}>
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
         <div>
-          <h1 style={{
-            fontSize: '2rem',
-            fontWeight: 'bold',
-            background: 'linear-gradient(to right, #60a5fa, #a78bfa, #34d399)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            marginBottom: '8px'
-          }}>
-            Мои боты
-          </h1>
-          <p style={{ color: '#9ca3af' }}>
-            Управляйте своими ботами и отслеживайте их эффективность
-          </p>
+          <h1 className="text-3xl font-bold text-white mb-2">Мои боты</h1>
+          <p className="text-gray-400">Управляйте своими ботами и сценариями</p>
         </div>
-        
-        <Link
-          href="/bots/new"
-          style={{
-            position: 'relative',
-            textDecoration: 'none'
-          }}
-        >
-          <div style={{
-            position: 'absolute',
-            inset: '-2px',
-            background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-            borderRadius: '8px',
-            opacity: 0.3,
-            filter: 'blur(4px)'
-          }}></div>
-          <div style={{
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '12px 24px',
-            background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-            borderRadius: '8px',
-            color: 'white',
-            fontWeight: '500',
-            transition: 'all 0.2s',
-            cursor: 'pointer'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(to right, #2563eb, #7c3aed)';
-            e.currentTarget.style.transform = 'scale(1.05)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(to right, #3b82f6, #8b5cf6)';
-            e.currentTarget.style.transform = 'scale(1)';
-          }}>
-            <span style={{ marginRight: '8px', fontSize: '18px' }}>➕</span>
-            Создать бота
-          </div>
+        <Link href="/bots/create" className="btn-gradient flex items-center gap-2">
+          <span>+</span>
+          Создать бота
         </Link>
       </div>
 
       {/* Filters */}
-      <div style={{ marginBottom: '24px' }}>
-        <div style={{ position: 'relative' }}>
-          <div style={{
-            position: 'absolute',
-            inset: '-2px',
-            background: 'linear-gradient(to right, rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.2))',
-            borderRadius: '12px',
-            opacity: 0.2,
-            filter: 'blur(4px)'
-          }}></div>
-          <div style={{
-            position: 'relative',
-            background: 'rgba(55, 65, 81, 0.8)',
-            backdropFilter: 'blur(4px)',
-            border: '1px solid rgba(75, 85, 99, 0.5)',
-            borderRadius: '12px',
-            padding: '16px'
-          }}>
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px'
-            }}>
-              {/* Search */}
-              <div style={{ position: 'relative', flex: 1 }}>
-                <span style={{
-                  position: 'absolute',
-                  left: '12px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  fontSize: '16px'
-                }}>🔍</span>
-                <input
-                  type="text"
-                  placeholder="Поиск ботов..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{
-                    width: '100%',
-                    paddingLeft: '40px',
-                    paddingRight: '16px',
-                    paddingTop: '8px',
-                    paddingBottom: '8px',
-                    background: 'rgba(75, 85, 99, 0.5)',
-                    border: '1px solid rgba(107, 114, 128, 0.5)',
-                    borderRadius: '8px',
-                    color: 'white',
-                    fontSize: '14px',
-                    outline: 'none',
-                    transition: 'all 0.2s'
-                  }}
-                  onFocus={(e) => {
-                    e.target.style.borderColor = 'rgba(59, 130, 246, 0.5)';
-                    e.target.style.boxShadow = '0 0 0 2px rgba(59, 130, 246, 0.25)';
-                  }}
-                  onBlur={(e) => {
-                    e.target.style.borderColor = 'rgba(107, 114, 128, 0.5)';
-                    e.target.style.boxShadow = 'none';
-                  }}
-                />
-              </div>
-
-              <div style={{ display: 'flex', gap: '16px' }}>
-                {/* Platform Filter */}
-                <div style={{ position: 'relative' }}>
-                  <select
-                    value={filterPlatform}
-                    onChange={(e) => setFilterPlatform(e.target.value)}
-                    style={{
-                      background: 'rgba(75, 85, 99, 0.5)',
-                      border: '1px solid rgba(107, 114, 128, 0.5)',
-                      borderRadius: '8px',
-                      padding: '8px 32px 8px 16px',
-                      color: 'white',
-                      fontSize: '14px',
-                      outline: 'none',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <option value="all">Все платформы</option>
-                    <option value="TELEGRAM">Telegram</option>
-                    <option value="WHATSAPP">WhatsApp</option>
-                    <option value="VK">ВКонтакте</option>
-                  </select>
-                  <span style={{
-                    position: 'absolute',
-                    right: '8px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    pointerEvents: 'none',
-                    color: '#9ca3af'
-                  }}>🔽</span>
-                </div>
-
-                {/* Status Filter */}
-                <div style={{ position: 'relative' }}>
-                  <select
-                    value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
-                    style={{
-                      background: 'rgba(75, 85, 99, 0.5)',
-                      border: '1px solid rgba(107, 114, 128, 0.5)',
-                      borderRadius: '8px',
-                      padding: '8px 32px 8px 16px',
-                      color: 'white',
-                      fontSize: '14px',
-                      outline: 'none',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <option value="all">Все статусы</option>
-                    <option value="active">Активные</option>
-                    <option value="inactive">Остановленные</option>
-                  </select>
-                  <span style={{
-                    position: 'absolute',
-                    right: '8px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    pointerEvents: 'none',
-                    color: '#9ca3af'
-                  }}>⚡</span>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+        <div className="flex-1">
+          <input
+            type="text"
+            placeholder="Поиск по названию..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+          />
+        </div>
+        <div className="flex gap-2">
+          {['all', 'telegram', 'whatsapp', 'vk'].map((platform) => (
+            <button
+              key={platform}
+              onClick={() => setFilter(platform)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                filter === platform
+                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                  : 'bg-gray-800/50 text-gray-400 border border-gray-700 hover:text-white hover:bg-gray-800/70'
+              }`}
+            >
+              {platform === 'all' ? 'Все платформы' : platformConfig[platform as keyof typeof platformConfig]?.name}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Bots Grid */}
-      {filteredBots.length === 0 ? (
-        <div style={{ position: 'relative' }}>
-          <div style={{
-            position: 'absolute',
-            inset: '-2px',
-            background: 'linear-gradient(to right, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.2))',
-            borderRadius: '12px',
-            opacity: 0.2,
-            filter: 'blur(4px)'
-          }}></div>
-          <div style={{
-            position: 'relative',
-            background: 'rgba(55, 65, 81, 0.8)',
-            backdropFilter: 'blur(4px)',
-            border: '1px solid rgba(75, 85, 99, 0.5)',
-            borderRadius: '12px',
-            padding: '48px',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              margin: '0 auto 16px',
-              width: '64px',
-              height: '64px',
-              background: 'linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(75, 85, 99, 0.2))',
-              borderRadius: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '32px'
-            }}>
-              🤖
-            </div>
-            <h3 style={{ 
-              fontSize: '20px', 
-              fontWeight: '500', 
-              color: 'white', 
-              marginBottom: '8px' 
-            }}>
-              {searchTerm || filterPlatform !== 'all' || filterStatus !== 'all' 
-                ? 'Боты не найдены' 
-                : 'У вас пока нет ботов'}
-            </h3>
-            <p style={{ 
-              color: '#9ca3af', 
-              marginBottom: '24px' 
-            }}>
-              {searchTerm || filterPlatform !== 'all' || filterStatus !== 'all'
-                ? 'Попробуйте изменить фильтры поиска'
-                : 'Начните с создания вашего первого бота'}
-            </p>
-            <Link
-              href="/bots/new"
-              style={{
-                position: 'relative',
-                display: 'inline-block',
-                textDecoration: 'none'
-              }}
-            >
-              <div style={{
-                position: 'absolute',
-                inset: '-2px',
-                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-                borderRadius: '8px',
-                opacity: 0.3,
-                filter: 'blur(4px)'
-              }}></div>
-              <div style={{
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '12px 24px',
-                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-                borderRadius: '8px',
-                color: 'white',
-                fontWeight: '500'
-              }}>
-                <span style={{ marginRight: '8px' }}>➕</span>
-                Создать бота
-              </div>
-            </Link>
-          </div>
-        </div>
-      ) : (
-        <div style={{
-          display: 'grid',
-          gap: '24px',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))'
-        }}>
-          {filteredBots.map((bot, index) => (
-            <div
-              key={bot.id}
-              style={{ position: 'relative' }}
-            >
-              <div style={{
-                position: 'absolute',
-                inset: '-2px',
-                background: 'linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2), rgba(34, 197, 94, 0.2))',
-                borderRadius: '12px',
-                opacity: 0.2,
-                filter: 'blur(4px)'
-              }}></div>
-              <div style={{
-                position: 'relative',
-                background: 'rgba(55, 65, 81, 0.8)',
-                backdropFilter: 'blur(4px)',
-                border: '1px solid rgba(75, 85, 99, 0.5)',
-                borderRadius: '12px',
-                padding: '24px',
-                transition: 'all 0.3s',
-                cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(107, 114, 128, 0.5)';
-                e.currentTarget.style.transform = 'translateY(-4px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(75, 85, 99, 0.5)';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}>
-                {/* Header */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
-                  marginBottom: '16px'
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px'
-                  }}>
-                    <div style={{
-                      padding: '8px',
-                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))',
-                      borderRadius: '8px'
-                    }}>
-                      <span style={{ fontSize: '24px' }}>🤖</span>
-                    </div>
-                    <div>
-                      <h3 style={{
-                        fontSize: '18px',
-                        fontWeight: '600',
-                        color: 'white',
-                        margin: 0,
-                        marginBottom: '4px'
-                      }}>{bot.name}</h3>
-                      <span style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        padding: '2px 8px',
-                        borderRadius: '12px',
-                        fontSize: '12px',
-                        fontWeight: '500',
-                        background: platformConfig[bot.platform].color.bg,
-                        color: platformConfig[bot.platform].color.text,
-                        border: `1px solid ${platformConfig[bot.platform].color.border}`
-                      }}>
-                        {platformConfig[bot.platform].icon} {platformConfig[bot.platform].name}
-                      </span>
-                    </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredBots.map((bot) => {
+          const platform = platformConfig[bot.platform];
+          
+          return (
+            <div key={bot.id} className="card-glass group hover:scale-[1.02] transition-all duration-200">
+              {/* Header */}
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-lg font-semibold text-white">{bot.name}</h3>
+                    <div className={`w-2 h-2 rounded-full ${bot.isActive ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`} />
                   </div>
-                  <button style={{
-                    padding: '8px',
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#9ca3af',
-                    cursor: 'pointer',
-                    borderRadius: '4px',
-                    transition: 'all 0.2s'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'white';
-                    e.currentTarget.style.background = 'rgba(75, 85, 99, 0.5)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = '#9ca3af';
-                    e.currentTarget.style.background = 'transparent';
-                  }}>
-                    ⋮
-                  </button>
-                </div>
-
-                {/* Description */}
-                <p style={{
-                  color: '#9ca3af',
-                  fontSize: '14px',
-                  marginBottom: '16px',
-                  lineHeight: '1.5'
-                }}>{bot.description}</p>
-
-                {/* Stats */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(3, 1fr)',
-                  gap: '16px',
-                  marginBottom: '16px'
-                }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{
-                      fontSize: '18px',
-                      fontWeight: '600',
-                      color: 'white'
-                    }}>{bot.users}</div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#9ca3af'
-                    }}>Пользователи</div>
-                  </div>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{
-                      fontSize: '18px',
-                      fontWeight: '600',
-                      color: '#22c55e'
-                    }}>{bot.messages}</div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#9ca3af'
-                    }}>Сообщения</div>
-                  </div>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{
-                      fontSize: '18px',
-                      fontWeight: '600',
-                      color: '#a78bfa'
-                    }}>{bot.successRate}%</div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#9ca3af'
-                    }}>Успешность</div>
-                  </div>
-                </div>
-
-                {/* Status */}
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '16px'
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}>
-                    <div style={{
-                      width: '8px',
-                      height: '8px',
-                      borderRadius: '50%',
-                      background: bot.isActive ? '#22c55e' : '#6b7280'
-                    }}></div>
-                    <span style={{
-                      fontSize: '14px',
-                      color: bot.isActive ? '#22c55e' : '#6b7280'
-                    }}>
-                      {bot.isActive ? 'Активен' : 'Остановлен'}
+                  <div className="flex items-center gap-2">
+                    <span 
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        background: platform.color.bg,
+                        color: platform.color.text,
+                        border: `1px solid ${platform.color.border}`
+                      }}
+                    >
+                      {platform.icon} {platform.name}
                     </span>
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    fontSize: '12px',
-                    color: '#6b7280'
-                  }}>
-                    <span>🕐</span>
-                    <span>{bot.lastActivity}</span>
-                  </div>
                 </div>
+                <button className="p-2 text-gray-400 hover:text-white hover:bg-gray-700/50 rounded transition-colors">
+                  ⋮
+                </button>
+              </div>
 
-                {/* Actions */}
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <Link
+              {/* Description */}
+              <p className="text-gray-400 text-sm mb-4 line-clamp-2">
+                {bot.description}
+              </p>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="text-center">
+                  <div className="text-xl font-bold text-white">{bot.stats.messages}</div>
+                  <div className="text-xs text-gray-500">Сообщений</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xl font-bold text-white">{bot.stats.users}</div>
+                  <div className="text-xs text-gray-500">Пользователей</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-xl font-bold text-green-400">{bot.stats.conversion}%</div>
+                  <div className="text-xs text-gray-500">Конверсия</div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="flex justify-between items-center pt-4 border-t border-gray-700/50">
+                <span className="text-xs text-gray-500">
+                  Активен: {bot.lastActive}
+                </span>
+                <div className="flex gap-2">
+                  <Link 
                     href={`/bots/${bot.id}/edit`}
-                    style={{
-                      flex: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '8px 12px',
-                      background: 'rgba(75, 85, 99, 0.5)',
-                      color: '#d1d5db',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(107, 114, 128, 0.5)',
-                      textDecoration: 'none',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(107, 114, 128, 0.5)';
-                      e.currentTarget.style.color = 'white';
-                      e.currentTarget.style.borderColor = 'rgba(156, 163, 175, 0.5)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(75, 85, 99, 0.5)';
-                      e.currentTarget.style.color = '#d1d5db';
-                      e.currentTarget.style.borderColor = 'rgba(107, 114, 128, 0.5)';
-                    }}
+                    className="px-3 py-1 text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors"
                   >
-                    <span style={{ marginRight: '4px' }}>✏️</span>
-                    Править
+                    Редактировать
                   </Link>
-                  <Link
+                  <Link 
                     href={`/bots/${bot.id}/analytics`}
-                    style={{
-                      flex: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: '8px 12px',
-                      background: 'rgba(75, 85, 99, 0.5)',
-                      color: '#d1d5db',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      borderRadius: '8px',
-                      border: '1px solid rgba(107, 114, 128, 0.5)',
-                      textDecoration: 'none',
-                      transition: 'all 0.2s'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(107, 114, 128, 0.5)';
-                      e.currentTarget.style.color = 'white';
-                      e.currentTarget.style.borderColor = 'rgba(156, 163, 175, 0.5)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(75, 85, 99, 0.5)';
-                      e.currentTarget.style.color = '#d1d5db';
-                      e.currentTarget.style.borderColor = 'rgba(107, 114, 128, 0.5)';
-                    }}
+                    className="px-3 py-1 text-xs font-medium text-gray-400 hover:text-white transition-colors"
                   >
-                    <span style={{ marginRight: '4px' }}>📊</span>
-                    Статистика
+                    Аналитика
                   </Link>
-                  <button style={{
-                    padding: '8px',
-                    borderRadius: '8px',
-                    border: '1px solid',
-                    transition: 'all 0.2s',
-                    cursor: 'pointer',
-                    background: bot.isActive 
-                      ? 'rgba(239, 68, 68, 0.2)' 
-                      : 'rgba(34, 197, 94, 0.2)',
-                    color: bot.isActive ? '#f87171' : '#22c55e',
-                    borderColor: bot.isActive ? 'rgba(239, 68, 68, 0.3)' : 'rgba(34, 197, 94, 0.3)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = bot.isActive 
-                      ? 'rgba(239, 68, 68, 0.3)' 
-                      : 'rgba(34, 197, 94, 0.3)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = bot.isActive 
-                      ? 'rgba(239, 68, 68, 0.2)' 
-                      : 'rgba(34, 197, 94, 0.2)';
-                  }}>
-                    {bot.isActive ? '⏸️' : '▶️'}
-                  </button>
                 </div>
               </div>
             </div>
-          ))}
+          );
+        })}
+
+        {/* Create New Bot Card */}
+        <Link 
+          href="/bots/create" 
+          className="card-glass min-h-[300px] flex flex-col items-center justify-center gap-4 border-2 border-dashed border-gray-600 hover:border-gray-500 hover:bg-gray-800/30 transition-all group cursor-pointer"
+        >
+          <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+            +
+          </div>
+          <div className="text-center">
+            <p className="text-lg font-medium text-gray-300 group-hover:text-white transition-colors">
+              Создать нового бота
+            </p>
+            <p className="text-sm text-gray-500 mt-1">
+              Начните с шаблона или с нуля
+            </p>
+          </div>
+        </Link>
+      </div>
+
+      {/* Empty State */}
+      {filteredBots.length === 0 && (
+        <div className="text-center py-12">
+          <div className="text-6xl mb-4">🤖</div>
+          <h3 className="text-xl font-medium text-gray-300 mb-2">
+            Боты не найдены
+          </h3>
+          <p className="text-gray-500">
+            Попробуйте изменить фильтры или создайте нового бота
+          </p>
         </div>
       )}
     </div>

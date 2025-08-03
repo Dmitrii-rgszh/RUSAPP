@@ -4,104 +4,62 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+interface NavItem {
+  id: string;
+  name: string;
+  href: string;
+  icon: string;
+  badge?: string;
+}
+
 export default function Sidebar() {
   const pathname = usePathname();
 
-  const mainNavigation = [
-    { id: 'dashboard', name: 'Главная', icon: '🏠', href: '/dashboard', badge: null },
-    { id: 'bots', name: 'Боты', icon: '🤖', href: '/bots', badge: 5 },
-    { id: 'analytics', name: 'Аналитика', icon: '📊', href: '/analytics', badge: null },
-    { id: 'contacts', name: 'Контакты', icon: '👥', href: '/contacts', badge: null },
-    { id: 'templates', name: 'Шаблоны', icon: '📋', href: '/templates', badge: null },
-    { id: 'integrations', name: 'Интеграции', icon: '⚡', href: '/integrations', badge: null },
+  const mainNavigation: NavItem[] = [
+    { id: 'dashboard', name: 'Главная', href: '/dashboard', icon: '🏠' },
+    { id: 'bots', name: 'Мои боты', href: '/bots', icon: '🤖', badge: '3' },
+    { id: 'analytics', name: 'Аналитика', href: '/analytics', icon: '📊' },
+    { id: 'templates', name: 'Шаблоны', href: '/templates', icon: '📋', badge: 'New' },
   ];
 
-  const secondaryNavigation = [
-    { id: 'settings', name: 'Настройки', icon: '⚙️', href: '/settings' },
-    { id: 'help', name: 'Помощь', icon: '❓', href: '/help' },
+  const secondaryNavigation: NavItem[] = [
+    { id: 'integrations', name: 'Интеграции', href: '/integrations', icon: '🔌' },
+    { id: 'team', name: 'Команда', href: '/team', icon: '👥' },
+    { id: 'settings', name: 'Настройки', href: '/settings', icon: '⚙️' },
   ];
 
   const planData = {
-    name: 'Старт',
-    bots: { used: 3, total: 5 },
-    messages: { used: 2340, total: 5000 }
+    name: 'Pro Plan',
+    usage: {
+      current: 12,
+      limit: 50,
+      percentage: 24
+    }
   };
 
   return (
-    <div style={{
-      width: '256px',
-      height: '100vh',
-      background: 'rgba(17, 24, 39, 0.95)',
-      backdropFilter: 'blur(12px)',
-      borderRight: '1px solid rgba(75, 85, 99, 0.5)',
-      display: 'flex',
-      flexDirection: 'column'
-    }}>
+    <aside className="w-64 min-h-screen bg-gray-800/90 backdrop-blur-xl border-r border-gray-700/50 flex flex-col">
       {/* Logo */}
-      <div style={{
-        padding: '24px',
-        borderBottom: '1px solid rgba(75, 85, 99, 0.5)'
-      }}>
-        <Link href="/dashboard" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          textDecoration: 'none'
-        }}>
-          <div style={{ position: 'relative' }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
-              borderRadius: '8px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '16px'
-            }}>
+      <div className="p-6 border-b border-gray-700/50">
+        <Link href="/dashboard" className="block">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-xl shadow-lg shadow-purple-500/20">
               🤖
             </div>
-            <div style={{
-              position: 'absolute',
-              top: '-4px',
-              right: '-4px',
-              width: '12px',
-              height: '12px',
-              background: '#34d399',
-              borderRadius: '50%',
-              border: '2px solid #111827'
-            }}></div>
-          </div>
-          <div>
-            <h1 style={{
-              fontSize: '20px',
-              fontWeight: 'bold',
-              background: 'linear-gradient(to right, #60a5fa, #a78bfa)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              margin: 0
-            }}>
-              BotCraft
-            </h1>
-            <p style={{
-              fontSize: '12px',
-              color: '#6b7280',
-              margin: 0
-            }}>v2.1.0</p>
+            <div className="flex flex-col">
+              <h1 className="text-xl font-bold gradient-text">
+                BotCraft
+              </h1>
+              <p className="text-xs text-gray-500">v2.1.0</p>
+            </div>
           </div>
         </Link>
       </div>
 
       {/* Navigation */}
-      <nav style={{
-        flex: 1,
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '8px'
-      }}>
+      <nav className="flex-1 p-4 flex flex-col gap-2">
         {/* Main Navigation */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <div className="flex flex-col gap-1">
           {mainNavigation.map((item) => {
             const isActive = pathname === item.href;
             
@@ -109,69 +67,37 @@ export default function Sidebar() {
               <Link
                 key={item.id}
                 href={item.href}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '10px 12px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s',
-                  background: isActive 
-                    ? 'linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))'
-                    : 'transparent',
-                  color: isActive ? '#ffffff' : '#9ca3af',
-                  border: isActive ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent'
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.color = '#ffffff';
-                    e.currentTarget.style.background = 'rgba(75, 85, 99, 0.3)';
+                className={`
+                  flex items-center px-3 py-2.5 text-sm font-medium rounded-lg
+                  transition-all duration-200
+                  ${isActive 
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30' 
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
                   }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.color = '#9ca3af';
-                    e.currentTarget.style.background = 'transparent';
-                  }
-                }}
+                `}
               >
-                <span style={{ 
-                  marginRight: '12px', 
-                  fontSize: '16px',
-                  color: isActive ? '#60a5fa' : '#6b7280'
-                }}>
+                <span className={`mr-3 text-base ${isActive ? 'text-blue-400' : 'text-gray-500'}`}>
                   {item.icon}
                 </span>
-                <span style={{ flex: 1 }}>{item.name}</span>
+                <span className="flex-1">{item.name}</span>
                 
                 {/* Badge */}
                 {item.badge && (
-                  <span style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '2px 8px',
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    background: 'linear-gradient(to right, #22c55e, #16a34a)',
-                    color: 'white',
-                    borderRadius: '12px'
-                  }}>
+                  <span className={`
+                    inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold
+                    ${item.badge === 'New' 
+                      ? 'bg-gradient-to-r from-green-500 to-green-600' 
+                      : 'bg-gradient-to-r from-blue-500 to-purple-600'
+                    }
+                    text-white rounded-full
+                  `}>
                     {item.badge}
                   </span>
                 )}
                 
                 {/* Active Indicator */}
                 {isActive && (
-                  <span style={{ 
-                    marginLeft: '8px', 
-                    color: '#60a5fa',
-                    fontSize: '12px'
-                  }}>
-                    ▶
-                  </span>
+                  <span className="ml-2 text-blue-400 text-xs">▶</span>
                 )}
               </Link>
             );
@@ -179,13 +105,10 @@ export default function Sidebar() {
         </div>
 
         {/* Divider */}
-        <div style={{
-          margin: '24px 0',
-          borderTop: '1px solid rgba(75, 85, 99, 0.5)'
-        }}></div>
+        <div className="my-6 border-t border-gray-700/50"></div>
 
         {/* Secondary Navigation */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <div className="flex flex-col gap-1">
           {secondaryNavigation.map((item) => {
             const isActive = pathname === item.href;
             
@@ -193,42 +116,19 @@ export default function Sidebar() {
               <Link
                 key={item.id}
                 href={item.href}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '10px 12px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s',
-                  background: isActive 
-                    ? 'linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))'
-                    : 'transparent',
-                  color: isActive ? '#ffffff' : '#9ca3af',
-                  border: isActive ? '1px solid rgba(59, 130, 246, 0.3)' : '1px solid transparent'
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.color = '#ffffff';
-                    e.currentTarget.style.background = 'rgba(75, 85, 99, 0.3)';
+                className={`
+                  flex items-center px-3 py-2.5 text-sm font-medium rounded-lg
+                  transition-all duration-200
+                  ${isActive 
+                    ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-white border border-blue-500/30' 
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
                   }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.color = '#9ca3af';
-                    e.currentTarget.style.background = 'transparent';
-                  }
-                }}
+                `}
               >
-                <span style={{ 
-                  marginRight: '12px', 
-                  fontSize: '16px',
-                  color: isActive ? '#60a5fa' : '#6b7280'
-                }}>
+                <span className={`mr-3 text-base ${isActive ? 'text-blue-400' : 'text-gray-500'}`}>
                   {item.icon}
                 </span>
-                <span style={{ flex: 1 }}>{item.name}</span>
+                <span className="flex-1">{item.name}</span>
               </Link>
             );
           })}
@@ -236,154 +136,60 @@ export default function Sidebar() {
       </nav>
 
       {/* Plan Information */}
-      <div style={{
-        padding: '16px',
-        borderTop: '1px solid rgba(75, 85, 99, 0.5)'
-      }}>
-        <div style={{ position: 'relative' }}>
-          <div style={{
-            position: 'absolute',
-            inset: '-2px',
-            background: 'linear-gradient(to right, #22c55e, #3b82f6)',
-            borderRadius: '8px',
-            opacity: 0.2,
-            filter: 'blur(4px)'
-          }}></div>
+      <div className="p-4 border-t border-gray-700/50">
+        <div className="relative">
+          {/* Glow effect */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg opacity-20 blur"></div>
           
-          <div style={{
-            position: 'relative',
-            background: 'rgba(55, 65, 81, 0.8)',
-            backdropFilter: 'blur(4px)',
-            border: '1px solid rgba(75, 85, 99, 0.5)',
-            borderRadius: '8px',
-            padding: '16px'
-          }}>
+          <div className="relative glass p-4 rounded-lg">
             {/* Plan Badge */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '12px'
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}>
-                <span style={{ 
-                  fontSize: '16px', 
-                  color: '#facc15' 
-                }}>👑</span>
-                <span style={{
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: '#ffffff'
-                }}>{planData.name}</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-base text-yellow-400">👑</span>
+                <span className="text-sm font-medium text-white">{planData.name}</span>
               </div>
-              <span style={{
-                fontSize: '12px',
-                color: '#22c55e',
-                fontWeight: '500'
-              }}>АКТИВЕН</span>
+              <span className="text-xs text-green-400 font-medium">Активен</span>
             </div>
 
-            {/* Usage Bars */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {/* Bots Usage */}
-              <div>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  fontSize: '12px',
-                  marginBottom: '4px'
-                }}>
-                  <span style={{ color: '#9ca3af' }}>Боты</span>
-                  <span style={{
-                    color: '#22c55e',
-                    fontWeight: '500'
-                  }}>
-                    {planData.bots.used}/{planData.bots.total}
-                  </span>
-                </div>
-                <div style={{
-                  height: '8px',
-                  background: '#374151',
-                  borderRadius: '4px',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    width: `${(planData.bots.used / planData.bots.total) * 100}%`,
-                    background: 'linear-gradient(to right, #22c55e, #16a34a)',
-                    transition: 'all 0.5s'
-                  }}></div>
-                </div>
+            {/* Usage Info */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-gray-400">Использовано ботов</span>
+                <span className="text-gray-300 font-medium">
+                  {planData.usage.current}/{planData.usage.limit}
+                </span>
               </div>
-
-              {/* Messages Usage */}
-              <div>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  fontSize: '12px',
-                  marginBottom: '4px'
-                }}>
-                  <span style={{ color: '#9ca3af' }}>Сообщения</span>
-                  <span style={{
-                    color: '#3b82f6',
-                    fontWeight: '500'
-                  }}>
-                    {planData.messages.used.toLocaleString()}/{planData.messages.total.toLocaleString()}
-                  </span>
-                </div>
-                <div style={{
-                  height: '8px',
-                  background: '#374151',
-                  borderRadius: '4px',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    height: '100%',
-                    width: `${(planData.messages.used / planData.messages.total) * 100}%`,
-                    background: 'linear-gradient(to right, #3b82f6, #2563eb)',
-                    transition: 'all 0.5s'
-                  }}></div>
-                </div>
+              
+              {/* Progress Bar */}
+              <div className="w-full bg-gray-700 rounded-full h-2">
+                <div 
+                  className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${planData.usage.percentage}%` }}
+                />
               </div>
             </div>
 
             {/* Upgrade Button */}
-            <button style={{
-              width: '100%',
-              marginTop: '16px',
-              padding: '8px 12px',
-              background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
-              color: 'white',
-              fontSize: '14px',
-              fontWeight: '500',
-              borderRadius: '8px',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(to right, #2563eb, #7c3aed)';
-              e.currentTarget.style.transform = 'scale(1.05)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'linear-gradient(to right, #3b82f6, #8b5cf6)';
-              e.currentTarget.style.transform = 'scale(1)';
-            }}>
-              <span>👑</span>
-              <span>Улучшить план</span>
+            <button className="w-full mt-3 px-3 py-1.5 text-xs font-medium text-white bg-gradient-to-r from-purple-500 to-purple-600 rounded-md hover:from-purple-600 hover:to-purple-700 transition-all duration-200">
+              Улучшить план →
             </button>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* User Profile */}
+      <div className="p-4 border-t border-gray-700/50">
+        <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700/30 transition-colors cursor-pointer">
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-sm font-medium text-white">
+            JD
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-white truncate">John Doe</p>
+            <p className="text-xs text-gray-400 truncate">john@example.com</p>
+          </div>
+          <span className="text-gray-400 text-sm">⚙️</span>
+        </div>
+      </div>
+    </aside>
   );
 }

@@ -1,250 +1,178 @@
+'use client';
+
 import React from 'react';
 
 export default function DashboardPage() {
+  const stats = [
+    { 
+      id: 1, 
+      icon: '🤖', 
+      value: '3', 
+      label: 'Активных ботов', 
+      change: '+2', 
+      changeType: 'positive' 
+    },
+    { 
+      id: 2, 
+      icon: '💬', 
+      value: '1,234', 
+      label: 'Сообщений сегодня', 
+      change: '+12%', 
+      changeType: 'positive' 
+    },
+    { 
+      id: 3, 
+      icon: '👥', 
+      value: '342', 
+      label: 'Пользователи', 
+      change: '+8%', 
+      changeType: 'positive' 
+    },
+    { 
+      id: 4, 
+      icon: '📈', 
+      value: '89%', 
+      label: 'Конверсия', 
+      change: '-3%', 
+      changeType: 'negative' 
+    }
+  ];
+
+  const recentActivity = [
+    { id: 1, user: 'Иван Петров', action: 'Начал диалог', bot: 'Поддержка 24/7', time: '5 мин назад' },
+    { id: 2, user: 'Мария Смирнова', action: 'Завершила покупку', bot: 'Продажи Bot', time: '12 мин назад' },
+    { id: 3, user: 'Алексей Козлов', action: 'Оставил отзыв', bot: 'Отзывы Bot', time: '1 час назад' },
+  ];
+
+  const botPerformance = [
+    { id: 1, name: 'Поддержка 24/7', messages: 523, conversion: 92 },
+    { id: 2, name: 'Продажи Bot', messages: 341, conversion: 78 },
+    { id: 3, name: 'HR Assistant', messages: 156, conversion: 85 },
+  ];
+
   return (
-    <div style={{ 
-      padding: '24px',
-      background: 'linear-gradient(135deg, #1f2937, #111827)',
-      minHeight: '100vh',
-      color: 'white'
-    }}>
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div style={{ marginBottom: '32px' }}>
-        <h1 style={{
-          fontSize: '2rem',
-          fontWeight: 'bold',
-          background: 'linear-gradient(to right, #60a5fa, #a78bfa, #34d399)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          marginBottom: '8px'
-        }}>
-          Добро пожаловать в BotCraft!
-        </h1>
-        <p style={{ color: '#9ca3af' }}>
-          Ваша панель управления ботами
-        </p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Добро пожаловать в BotCraft
+          </h1>
+          <p className="text-gray-400">
+            Управляйте своими ботами и анализируйте их эффективность
+          </p>
+        </div>
+        <button className="btn-gradient flex items-center gap-2">
+          <span>🚀</span>
+          Создать бота
+        </button>
       </div>
 
       {/* Stats Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: '24px',
-        marginBottom: '32px'
-      }}>
-        {/* Card 1 */}
-        <div style={{
-          background: 'rgba(55, 65, 81, 0.8)',
-          border: '1px solid rgba(75, 85, 99, 0.5)',
-          borderRadius: '12px',
-          padding: '24px',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            marginBottom: '16px'
-          }}>
-            <div style={{
-              background: 'rgba(59, 130, 246, 0.2)',
-              padding: '8px',
-              borderRadius: '8px'
-            }}>
-              🤖
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat) => (
+          <div key={stat.id} className="card-glass group hover:scale-105 transition-transform duration-200">
+            <div className="flex justify-between items-center mb-4">
+              <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                {stat.icon}
+              </div>
+              <span className={`text-sm font-medium ${
+                stat.changeType === 'positive' ? 'text-green-400' : 'text-red-400'
+              }`}>
+                {stat.change}
+              </span>
             </div>
-            <span style={{ color: '#34d399', fontSize: '14px' }}>+12</span>
+            <div className="text-2xl font-bold text-white mb-1">
+              {stat.value}
+            </div>
+            <div className="text-sm text-gray-400">
+              {stat.label}
+            </div>
           </div>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '4px' }}>
-            52
+        ))}
+      </div>
+
+      {/* Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Recent Activity */}
+        <div className="lg:col-span-2 card-glass">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-white">Последняя активность</h2>
+            <button className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+              Все события →
+            </button>
           </div>
-          <div style={{ fontSize: '14px', color: '#d1d5db' }}>
-            Активные боты
+          
+          <div className="space-y-4">
+            {recentActivity.map((activity) => (
+              <div key={activity.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium">
+                    {activity.user.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div>
+                    <p className="text-white font-medium">{activity.user}</p>
+                    <p className="text-sm text-gray-400">{activity.action} • {activity.bot}</p>
+                  </div>
+                </div>
+                <span className="text-xs text-gray-500">{activity.time}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Card 2 */}
-        <div style={{
-          background: 'rgba(55, 65, 81, 0.8)',
-          border: '1px solid rgba(75, 85, 99, 0.5)',
-          borderRadius: '12px',
-          padding: '24px',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            marginBottom: '16px'
-          }}>
-            <div style={{
-              background: 'rgba(59, 130, 246, 0.2)',
-              padding: '8px',
-              borderRadius: '8px'
-            }}>
-              💬
-            </div>
-            <span style={{ color: '#34d399', fontSize: '14px' }}>+12%</span>
+        {/* Bot Performance */}
+        <div className="card-glass">
+          <h2 className="text-xl font-semibold text-white mb-6">Эффективность ботов</h2>
+          
+          <div className="space-y-4">
+            {botPerformance.map((bot) => (
+              <div key={bot.id} className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-medium text-gray-300">{bot.name}</span>
+                  <span className="text-xs text-gray-500">{bot.messages} сообщений</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div 
+                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${bot.conversion}%` }}
+                  />
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-gray-500">Конверсия</span>
+                  <span className="text-xs font-medium text-green-400">{bot.conversion}%</span>
+                </div>
+              </div>
+            ))}
           </div>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '4px' }}>
-            1,234
-          </div>
-          <div style={{ fontSize: '14px', color: '#d1d5db' }}>
-            Сообщений сегодня
-          </div>
-        </div>
-
-        {/* Card 3 */}
-        <div style={{
-          background: 'rgba(55, 65, 81, 0.8)',
-          border: '1px solid rgba(75, 85, 99, 0.5)',
-          borderRadius: '12px',
-          padding: '24px',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            marginBottom: '16px'
-          }}>
-            <div style={{
-              background: 'rgba(59, 130, 246, 0.2)',
-              padding: '8px',
-              borderRadius: '8px'
-            }}>
-              👥
-            </div>
-            <span style={{ color: '#34d399', fontSize: '14px' }}>+8%</span>
-          </div>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '4px' }}>
-            342
-          </div>
-          <div style={{ fontSize: '14px', color: '#d1d5db' }}>
-            Пользователи
-          </div>
-        </div>
-
-        {/* Card 4 */}
-        <div style={{
-          background: 'rgba(55, 65, 81, 0.8)',
-          border: '1px solid rgba(75, 85, 99, 0.5)',
-          borderRadius: '12px',
-          padding: '24px',
-          backdropFilter: 'blur(10px)'
-        }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            marginBottom: '16px'
-          }}>
-            <div style={{
-              background: 'rgba(59, 130, 246, 0.2)',
-              padding: '8px',
-              borderRadius: '8px'
-            }}>
-              📈
-            </div>
-            <span style={{ color: '#34d399', fontSize: '14px' }}>+3%</span>
-          </div>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '4px' }}>
-            89%
-          </div>
-          <div style={{ fontSize: '14px', color: '#d1d5db' }}>
-            Успешность
-          </div>
+          
+          <button className="w-full mt-6 px-4 py-2 text-sm font-medium text-blue-400 border border-blue-500/30 rounded-lg hover:bg-blue-500/10 transition-colors">
+            Подробная аналитика
+          </button>
         </div>
       </div>
 
-      {/* Activity Section */}
-      <div style={{
-        background: 'rgba(55, 65, 81, 0.8)',
-        border: '1px solid rgba(75, 85, 99, 0.5)',
-        borderRadius: '12px',
-        padding: '24px',
-        backdropFilter: 'blur(10px)'
-      }}>
-        <h2 style={{ 
-          fontSize: '20px', 
-          fontWeight: '600', 
-          marginBottom: '24px' 
-        }}>
-          Последняя активность
-        </h2>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '12px',
-            padding: '12px',
-            borderRadius: '8px',
-            background: 'rgba(75, 85, 99, 0.3)'
-          }}>
-            <div style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: '#60a5fa'
-            }}></div>
-            <div>
-              <div style={{ fontSize: '14px', fontWeight: '500' }}>
-                Бот поддержки
-              </div>
-              <div style={{ fontSize: '12px', color: '#9ca3af' }}>
-                Новое сообщение от пользователя
-              </div>
-            </div>
-            <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#6b7280' }}>
-              2 мин назад
-            </div>
-          </div>
-
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '12px',
-            padding: '12px',
-            borderRadius: '8px',
-            background: 'rgba(75, 85, 99, 0.3)'
-          }}>
-            <div style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              background: '#34d399'
-            }}></div>
-            <div>
-              <div style={{ fontSize: '14px', fontWeight: '500' }}>
-                Бот продаж
-              </div>
-              <div style={{ fontSize: '12px', color: '#9ca3af' }}>
-                Завершена воронка продаж
-              </div>
-            </div>
-            <div style={{ marginLeft: 'auto', fontSize: '12px', color: '#6b7280' }}>
-              5 мин назад
-            </div>
-          </div>
+      {/* Quick Actions */}
+      <div className="card-gradient-border">
+        <h2 className="text-lg font-semibold text-white mb-4">Быстрые действия</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
+            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">📝</span>
+            <span className="text-sm text-gray-300">Создать сценарий</span>
+          </button>
+          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
+            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">📊</span>
+            <span className="text-sm text-gray-300">Экспорт данных</span>
+          </button>
+          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
+            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">🔔</span>
+            <span className="text-sm text-gray-300">Настроить алерты</span>
+          </button>
+          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
+            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">🎯</span>
+            <span className="text-sm text-gray-300">A/B тестирование</span>
+          </button>
         </div>
-      </div>
-
-      {/* Test Message */}
-      <div style={{
-        marginTop: '32px',
-        padding: '16px',
-        background: 'rgba(34, 197, 94, 0.1)',
-        border: '1px solid rgba(34, 197, 94, 0.3)',
-        borderRadius: '8px',
-        textAlign: 'center'
-      }}>
-        <h3 style={{ color: '#34d399', marginBottom: '8px' }}>
-          ✅ Стили работают!
-        </h3>
-        <p style={{ color: '#9ca3af' }}>
-          Если вы видите эту красивую панель - дизайн применился успешно!
-        </p>
       </div>
     </div>
   );
