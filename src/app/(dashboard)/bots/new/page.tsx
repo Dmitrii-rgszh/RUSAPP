@@ -1,193 +1,225 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowLeft, Bot, MessageCircle, Phone, Globe, Zap } from 'lucide-react';
 
 const platforms = [
   {
-    id: "TELEGRAM",
-    name: "Telegram",
-    description: "Самый простой для начала",
-    color: "border-blue-500",
+    id: 'TELEGRAM',
+    name: 'Telegram',
+    icon: MessageCircle,
+    description: 'Самый популярный мессенджер в России',
+    color: 'from-blue-500 to-blue-600',
+    bgColor: 'bg-blue-500/10',
+    borderColor: 'border-blue-500/30',
+    features: ['Inline кнопки', 'Файлы до 2ГБ', 'Группы и каналы']
   },
   {
-    id: "WHATSAPP",
-    name: "WhatsApp",
-    description: "Для бизнес-коммуникаций",
-    color: "border-green-500",
+    id: 'WHATSAPP',
+    name: 'WhatsApp',
+    icon: Phone,
+    description: 'Мировой лидер среди мессенджеров',
+    color: 'from-green-500 to-green-600',
+    bgColor: 'bg-green-500/10',
+    borderColor: 'border-green-500/30',
+    features: ['Бизнес API', 'Шаблоны сообщений', 'Медиа контент']
   },
   {
-    id: "VK",
-    name: "ВКонтакте",
-    description: "Для российской аудитории",
-    color: "border-indigo-500",
+    id: 'VK',
+    name: 'ВКонтакте',
+    icon: MessageCircle,
+    description: 'Популярная соцсеть в России',
+    color: 'from-indigo-500 to-purple-600',
+    bgColor: 'bg-indigo-500/10',
+    borderColor: 'border-indigo-500/30',
+    features: ['Сообщества', 'Клавиатуры', 'Стикеры']
   },
   {
-    id: "WEBCHAT",
-    name: "Веб-чат",
-    description: "Виджет для сайта",
-    color: "border-gray-500",
-  },
+    id: 'WEBCHAT',
+    name: 'Веб-чат',
+    icon: Globe,
+    description: 'Виджет для вашего сайта',
+    color: 'from-gray-500 to-gray-600',
+    bgColor: 'bg-gray-500/10',
+    borderColor: 'border-gray-500/30',
+    features: ['Встройка в сайт', 'Кастомизация', 'Аналитика']
+  }
 ];
 
 export default function NewBotPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    platform: "",
+    name: '',
+    description: '',
+    platform: 'TELEGRAM'
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.platform) {
-      setError("Выберите платформу");
+    if (!formData.name.trim()) {
+      alert('Введите название бота');
       return;
     }
 
-    setIsLoading(true);
-    setError("");
+    setIsCreating(true);
 
     try {
-      const response = await fetch("/api/bots", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Ошибка при создании бота");
-      }
-
-      const bot = await response.json();
-      router.push(`/dashboard/bots/${bot.id}/edit`);
+      // В реальном приложении здесь будет API запрос
+      const mockBotId = 'cmdw352t60002evkc2m6caau';
+      
+      // Имитация создания бота
+      setTimeout(() => {
+        router.push(`/dashboard/bots/${mockBotId}/edit`);
+      }, 1500);
+      
     } catch (error) {
-      setError("Произошла ошибка при создании бота");
-    } finally {
-      setIsLoading(false);
+      console.error('Ошибка создания бота:', error);
+      setIsCreating(false);
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="mb-8">
-        <Link
-          href="/dashboard/bots"
-          className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Назад к ботам
-        </Link>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 p-6">
+      <div className="max-w-5xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex items-center gap-6">
+          <Link 
+            href="/dashboard/bots"
+            className="p-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-gray-300 hover:text-white hover:bg-white/20 transition-all duration-200"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+          
+          <div>
+            <h1 className="text-4xl font-bold text-white mb-2">Создать нового бота</h1>
+            <p className="text-gray-300 text-lg">Настройте основные параметры и выберите платформу</p>
+          </div>
+        </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">
-          Создание нового бота
-        </h1>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <p className="text-sm text-red-800">{error}</p>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Основная информация */}
+          <div className="card-glass">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-indigo-500/20 rounded-lg">
+                <Bot className="h-6 w-6 text-indigo-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-white">Основная информация</h2>
             </div>
-          )}
-
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Название бота
-            </label>
-            <input
-              type="text"
-              id="name"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Например: Бот поддержки"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Описание (необязательно)
-            </label>
-            <textarea
-              id="description"
-              rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              placeholder="Краткое описание назначения бота"
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
-              Выберите платформу
-            </label>
-            <div className="grid grid-cols-2 gap-4">
-              {platforms.map((platform) => (
-                <label
-                  key={platform.id}
-                  className={`relative rounded-lg border-2 p-4 cursor-pointer hover:bg-gray-50 ${
-                    formData.platform === platform.id
-                      ? platform.color
-                      : "border-gray-200"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="platform"
-                    value={platform.id}
-                    className="sr-only"
-                    onChange={(e) =>
-                      setFormData({ ...formData, platform: e.target.value })
-                    }
-                  />
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {platform.name}
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {platform.description}
-                    </p>
-                  </div>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-300 mb-3">
+                  Название бота *
                 </label>
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all"
+                  placeholder="Например: Бот поддержки"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-semibold text-gray-300 mb-3">
+                  Описание
+                </label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({...formData, description: e.target.value})}
+                  className="w-full px-4 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-400 transition-all resize-none"
+                  rows={4}
+                  placeholder="Краткое описание назначения бота"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Выбор платформы */}
+          <div className="card-glass">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-purple-500/20 rounded-lg">
+                <Zap className="h-6 w-6 text-purple-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-white">Выберите платформу</h2>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {platforms.map((platform) => (
+                <div
+                  key={platform.id}
+                  className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 border-2 ${
+                    formData.platform === platform.id
+                      ? `${platform.borderColor} bg-gradient-to-br ${platform.bgColor} shadow-lg scale-105`
+                      : 'border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30 hover:scale-102'
+                  }`}
+                  onClick={() => setFormData({...formData, platform: platform.id})}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`p-3 rounded-xl bg-gradient-to-r ${platform.color} shadow-lg`}>
+                      <platform.icon className="h-6 w-6 text-white" />
+                    </div>
+                    
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-white mb-2">{platform.name}</h3>
+                      <p className="text-sm text-gray-300 mb-4">{platform.description}</p>
+                      
+                      <div className="space-y-2">
+                        {platform.features.map((feature, index) => (
+                          <div key={index} className="flex items-center gap-2 text-xs text-gray-400">
+                            <div className="w-1.5 h-1.5 bg-indigo-400 rounded-full"></div>
+                            {feature}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                      formData.platform === platform.id
+                        ? 'border-indigo-400 bg-indigo-500'
+                        : 'border-gray-500'
+                    }`}>
+                      {formData.platform === platform.id && (
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="flex-1 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? "Создание..." : "Создать бота"}
-            </button>
+          {/* Кнопки действий */}
+          <div className="flex justify-end gap-4">
             <Link
               href="/dashboard/bots"
-              className="flex-1 rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="px-8 py-4 bg-white/10 border border-white/20 text-gray-300 rounded-xl hover:bg-white/20 hover:text-white transition-all duration-200 font-semibold"
             >
               Отмена
             </Link>
+            
+            <button
+              type="submit"
+              disabled={isCreating}
+              className="btn-gradient px-8 py-4 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-3 min-w-[200px] justify-center"
+            >
+              {isCreating ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Создание...
+                </>
+              ) : (
+                <>
+                  <Bot className="h-5 w-5" />
+                  Создать бота
+                </>
+              )}
+            </button>
           </div>
         </form>
       </div>

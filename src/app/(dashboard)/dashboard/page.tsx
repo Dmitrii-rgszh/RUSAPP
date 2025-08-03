@@ -1,200 +1,201 @@
 'use client';
 
-import React from 'react';
 import Link from 'next/link';
-import { useUser } from '@/hooks/useUser';
-import { useUserStats } from '@/hooks/useUserStats';
 
 export default function DashboardPage() {
-  const { user } = useUser();
-  const { stats: userStats, isLoading } = useUserStats();
-
   const stats = [
     { 
       id: 1, 
       icon: '🤖', 
-      value: userStats?.bots.active.toString() || '0', 
+      value: '2', 
       label: 'Активных ботов', 
-      change: '+2', 
-      changeType: 'positive' as const
+      change: '+2',
+      color: 'from-blue-500 to-indigo-600',
+      changeColor: 'text-green-400'
     },
     { 
       id: 2, 
       icon: '💬', 
-      value: userStats?.messages.toString() || '0', 
+      value: '1,250', 
       label: 'Сообщений всего', 
-      change: '+12%', 
-      changeType: 'positive' as const
+      change: '+12%',
+      color: 'from-green-500 to-emerald-600',
+      changeColor: 'text-green-400'
     },
     { 
       id: 3, 
       icon: '👥', 
-      value: userStats?.contacts.toString() || '0', 
+      value: '45', 
       label: 'Контактов', 
-      change: '+8%', 
-      changeType: 'positive' as const
+      change: '+8%',
+      color: 'from-purple-500 to-pink-600',
+      changeColor: 'text-green-400'
     },
     { 
       id: 4, 
       icon: '📈', 
-      value: userStats?.bots.total.toString() || '0', 
+      value: '3', 
       label: 'Всего ботов', 
-      change: '-', 
-      changeType: 'neutral' as const
+      change: '-',
+      color: 'from-orange-500 to-red-600',
+      changeColor: 'text-gray-400'
     }
   ];
 
   const recentActivity = [
-    { id: 1, user: 'Иван Петров', action: 'Начал диалог', bot: 'Поддержка 24/7', time: '5 мин назад' },
-    { id: 2, user: 'Мария Смирнова', action: 'Завершила покупку', bot: 'Продажи Bot', time: '12 мин назад' },
-    { id: 3, user: 'Алексей Козлов', action: 'Оставил отзыв', bot: 'Отзывы Bot', time: '1 час назад' },
+    { id: 1, user: 'Иван Петров', action: 'Начал диалог', bot: 'Поддержка 24/7', time: '5 мин назад', avatar: '👨‍💼' },
+    { id: 2, user: 'Мария Смирнова', action: 'Завершила покупку', bot: 'Продажи Bot', time: '12 мин назад', avatar: '👩‍💼' },
+    { id: 3, user: 'Алексей Козлов', action: 'Оставил отзыв', bot: 'Отзывы Bot', time: '1 час назад', avatar: '👤' },
   ];
 
   const botPerformance = [
-    { id: 1, name: 'Поддержка 24/7', messages: 523, conversion: 92 },
-    { id: 2, name: 'Продажи Bot', messages: 341, conversion: 78 },
-    { id: 3, name: 'HR Assistant', messages: 156, conversion: 85 },
+    { id: 1, name: 'Поддержка 24/7', messages: 523, conversion: 92, trend: '↗️' },
+    { id: 2, name: 'Продажи Bot', messages: 341, conversion: 78, trend: '↗️' },
+    { id: 3, name: 'HR Assistant', messages: 156, conversion: 85, trend: '➡️' },
   ];
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Добро пожаловать{user?.name ? `, ${user.name}` : ' в BotCraft'}!
-          </h1>
-          <p className="text-gray-400">
-            Управляйте своими ботами и анализируйте их эффективность
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900 p-6">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-bold text-white mb-3">
+              Добро пожаловать в BotCraft! 👋
+            </h1>
+            <p className="text-gray-300 text-lg">
+              Управляйте своими ботами и анализируйте их эффективность
+            </p>
+          </div>
+          <Link 
+            href="/dashboard/bots/new" 
+            className="btn-gradient flex items-center gap-3 px-6 py-3 text-lg font-semibold"
+          >
+            <span>🚀</span>
+            Создать бота
+          </Link>
         </div>
-        <Link href="/bots/create" className="btn-gradient flex items-center gap-2">
-          <span>🚀</span>
-          Создать бота
-        </Link>
-      </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {isLoading ? (
-          // Skeleton loading
-          <>
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="card-glass animate-pulse">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="w-12 h-12 bg-gray-700 rounded-lg"></div>
-                  <div className="w-12 h-4 bg-gray-700 rounded"></div>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat) => (
+            <div key={stat.id} className="card-glass group hover:scale-105 transition-all duration-300">
+              <div className="flex items-center justify-between mb-4">
+                <div className={`p-3 rounded-xl bg-gradient-to-r ${stat.color} shadow-lg`}>
+                  <span className="text-2xl">{stat.icon}</span>
                 </div>
-                <div className="h-8 bg-gray-700 rounded w-20 mb-2"></div>
-                <div className="h-4 bg-gray-700 rounded w-24"></div>
+                {stat.change !== '-' && (
+                  <div className={`text-sm font-bold ${stat.changeColor} bg-white/10 px-2 py-1 rounded-lg`}>
+                    {stat.change}
+                  </div>
+                )}
               </div>
-            ))}
-          </>
-        ) : (
-          stats.map((stat) => (
-            <div key={stat.id} className="card-glass group hover:scale-105 transition-transform duration-200">
-              <div className="flex justify-between items-center mb-4">
-                <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                  {stat.icon}
-                </div>
-                <span className={`text-sm font-medium ${
-                  stat.changeType === 'positive' ? 'text-green-400' : 
-                  stat.changeType === 'negative' ? 'text-red-400' : 'text-gray-400'
-                }`}>
-                  {stat.change}
-                </span>
-              </div>
-              <div className="text-2xl font-bold text-white mb-1">
+              <div className="text-3xl font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors">
                 {stat.value}
               </div>
               <div className="text-sm text-gray-400">
                 {stat.label}
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
 
-      {/* Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Activity */}
-        <div className="lg:col-span-2 card-glass">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold text-white">Последняя активность</h2>
-            <button className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
-              Все события →
-            </button>
-          </div>
-          
-          <div className="space-y-4">
-            {recentActivity.map((activity) => (
-              <div key={activity.id} className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-medium">
-                    {activity.user.split(' ').map(n => n[0]).join('')}
+        {/* Content Grid */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          {/* Recent Activity */}
+          <div className="card-glass">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-green-500/20 rounded-lg">
+                <span className="text-xl">⚡</span>
+              </div>
+              <h3 className="text-xl font-bold text-white">Последняя активность</h3>
+            </div>
+            <div className="space-y-4">
+              {recentActivity.map((activity) => (
+                <div key={activity.id} className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-200">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-indigo-500/20 rounded-full flex items-center justify-center">
+                      <span className="text-lg">{activity.avatar}</span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-white">{activity.user}</div>
+                      <div className="text-xs text-gray-400">{activity.action} • {activity.bot}</div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-white font-medium">{activity.user}</p>
-                    <p className="text-sm text-gray-400">{activity.action} • {activity.bot}</p>
+                  <div className="text-xs text-gray-500 bg-white/10 px-2 py-1 rounded-lg">
+                    {activity.time}
                   </div>
                 </div>
-                <span className="text-xs text-gray-500">{activity.time}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Bot Performance */}
+          <div className="card-glass">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 bg-purple-500/20 rounded-lg">
+                <span className="text-xl">📊</span>
               </div>
-            ))}
+              <h3 className="text-xl font-bold text-white">Производительность ботов</h3>
+            </div>
+            <div className="space-y-4">
+              {botPerformance.map((bot) => (
+                <div key={bot.id} className="flex items-center justify-between p-4 bg-white/5 rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-200">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center">
+                      <span className="text-lg">🤖</span>
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-white">{bot.name}</div>
+                      <div className="text-xs text-gray-400">{bot.messages} сообщений</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{bot.trend}</span>
+                    <div className="text-lg font-bold text-green-400">{bot.conversion}%</div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Bot Performance */}
+        {/* Quick Actions */}
         <div className="card-glass">
-          <h2 className="text-xl font-semibold text-white mb-6">Эффективность ботов</h2>
-          
-          <div className="space-y-4">
-            {botPerformance.map((bot) => (
-              <div key={bot.id} className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium text-gray-300">{bot.name}</span>
-                  <span className="text-xs text-gray-500">{bot.messages} сообщений</span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${bot.conversion}%` }}
-                  />
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-xs text-gray-500">Конверсия</span>
-                  <span className="text-xs font-medium text-green-400">{bot.conversion}%</span>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-yellow-500/20 rounded-lg">
+              <span className="text-xl">⚡</span>
+            </div>
+            <h3 className="text-xl font-bold text-white">Быстрые действия</h3>
           </div>
-          
-          <button className="w-full mt-6 px-4 py-2 text-sm font-medium text-blue-400 border border-blue-500/30 rounded-lg hover:bg-blue-500/10 transition-colors">
-            Подробная аналитика
-          </button>
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="card-gradient-border">
-        <h2 className="text-lg font-semibold text-white mb-4">Быстрые действия</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
-            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">📝</span>
-            <span className="text-sm text-gray-300">Создать сценарий</span>
-          </button>
-          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
-            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">📊</span>
-            <span className="text-sm text-gray-300">Экспорт данных</span>
-          </button>
-          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
-            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">🔔</span>
-            <span className="text-sm text-gray-300">Настроить алерты</span>
-          </button>
-          <button className="p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800/70 transition-colors group">
-            <span className="text-2xl mb-2 block group-hover:scale-110 transition-transform">🎯</span>
-            <span className="text-sm text-gray-300">A/B тестирование</span>
-          </button>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Link 
+              href="/test-builder"
+              className="p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-200 group hover:scale-105"
+            >
+              <div className="text-3xl mb-4">🔧</div>
+              <div className="font-bold text-white group-hover:text-indigo-300 mb-2">Тест конструктора</div>
+              <div className="text-sm text-gray-400">Попробовать визуальный редактор</div>
+            </Link>
+            
+            <Link 
+              href="/dashboard/bots"
+              className="p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-200 group hover:scale-105"
+            >
+              <div className="text-3xl mb-4">🤖</div>
+              <div className="font-bold text-white group-hover:text-indigo-300 mb-2">Мои боты</div>
+              <div className="text-sm text-gray-400">Управление всеми ботами</div>
+            </Link>
+            
+            <Link 
+              href="/test"
+              className="p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all duration-200 group hover:scale-105"
+            >
+              <div className="text-3xl mb-4">🏠</div>
+              <div className="font-bold text-white group-hover:text-indigo-300 mb-2">Навигация</div>
+              <div className="text-sm text-gray-400">Все тестовые страницы</div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

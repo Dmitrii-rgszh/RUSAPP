@@ -149,7 +149,7 @@ function FlowEditorContent() {
   );
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full bg-gradient-to-br from-gray-900 via-gray-800 to-indigo-900">
       <NodePanel />
       <div className="flex-1 relative">
         <ReactFlow
@@ -164,16 +164,77 @@ function FlowEditorContent() {
           onDragOver={onDragOver}
           nodeTypes={nodeTypes}
           fitView
+          className="react-flow-dark"
         >
-          <Background />
-          <Controls />
-          <MiniMap />
+          <Background 
+            color="#4338ca" 
+            gap={20} 
+            size={1}
+            className="opacity-20"
+          />
+          <Controls 
+            className="!bg-gray-800/90 !backdrop-blur-sm !border !border-gray-700/50 !shadow-xl"
+          />
+          <MiniMap 
+            className="!bg-gray-800/90 !backdrop-blur-sm !border !border-gray-700/50 !shadow-xl"
+            nodeColor={(node) => {
+              const colors = {
+                message: '#3b82f6',
+                buttons: '#10b981',
+                condition: '#8b5cf6',
+                question: '#f59e0b',
+                webhook: '#ef4444'
+              };
+              return colors[node.type as keyof typeof colors] || '#6b7280';
+            }}
+          />
         </ReactFlow>
       </div>
       <PropertiesPanel
         selectedNode={selectedNode}
         updateNodeData={updateNodeData}
       />
+      
+      {/* Custom Styles */}
+      <style jsx global>{`
+        .react-flow-dark {
+          background: transparent !important;
+        }
+        
+        .react-flow__edge-path {
+          stroke: #6366f1 !important;
+          stroke-width: 2 !important;
+        }
+        
+        .react-flow__edge.selected .react-flow__edge-path {
+          stroke: #8b5cf6 !important;
+          stroke-width: 3 !important;
+        }
+        
+        .react-flow__connection-line {
+          stroke: #6366f1 !important;
+          stroke-width: 2 !important;
+        }
+        
+        .react-flow__controls button {
+          background: rgba(31, 41, 55, 0.9) !important;
+          border: 1px solid rgba(107, 114, 128, 0.5) !important;
+          color: white !important;
+        }
+        
+        .react-flow__controls button:hover {
+          background: rgba(55, 65, 81, 0.9) !important;
+          border-color: rgba(139, 92, 246, 0.5) !important;
+        }
+        
+        .react-flow__minimap {
+          background: rgba(31, 41, 55, 0.9) !important;
+        }
+        
+        .react-flow__minimap-mask {
+          fill: rgba(139, 92, 246, 0.2) !important;
+        }
+      `}</style>
     </div>
   );
 }
