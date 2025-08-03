@@ -18,14 +18,20 @@ import "@xyflow/react/dist/style.css";
 
 import { NodePanel } from "./NodePanel";
 import { PropertiesPanel } from "./PropertiesPanel";
-import { MessageNode } from "./nodes/MessageNode";
-import { ButtonNode } from "./nodes/ButtonNode";
-import { ConditionNode } from "./nodes/ConditionNode";
+import { 
+  MessageNode, 
+  ButtonNode, 
+  ConditionNode, 
+  QuestionNode, 
+  WebhookNode 
+} from "./nodes";
 
 const nodeTypes = {
   message: MessageNode,
   buttons: ButtonNode,
   condition: ConditionNode,
+  question: QuestionNode,
+  webhook: WebhookNode,
 };
 
 const initialNodes: Node[] = [
@@ -72,11 +78,50 @@ function FlowEditorContent() {
         y: event.clientY - reactFlowBounds.top - 25,
       };
 
+      // Базовые данные для разных типов узлов
+      const getInitialData = (nodeType: string) => {
+        switch (nodeType) {
+          case "message":
+            return { 
+              text: "Новое сообщение",
+              messageType: "text" 
+            };
+          case "buttons":
+            return { 
+              question: "Выберите вариант:",
+              buttons: ["Вариант 1", "Вариант 2"] 
+            };
+          case "condition":
+            return { 
+              conditionType: "equals",
+              conditionValue: "",
+              variable: "last_user_message" 
+            };
+          case "question":
+            return { 
+              questionText: "Как вас зовут?",
+              questionType: "text",
+              required: true,
+              variableName: "user_name",
+              placeholder: "Введите ваше имя" 
+            };
+          case "webhook":
+            return { 
+              url: "",
+              method: "GET",
+              headers: {},
+              timeout: 5000 
+            };
+          default:
+            return { label: `${nodeType} node` };
+        }
+      };
+
       const newNode: Node = {
         id: `${Date.now()}`,
         type,
         position,
-        data: { label: `${type} node` },
+        data: getInitialData(type),
       };
 
       setNodes((nds) => nds.concat(newNode));
